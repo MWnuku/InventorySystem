@@ -11,11 +11,11 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Deletition {
+public class Deletion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Setter(AccessLevel.NONE)
-	@Column(name = "change_id")
+	@Column(name = "deletion_id")
 	private Long id;
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private Asset asset;
