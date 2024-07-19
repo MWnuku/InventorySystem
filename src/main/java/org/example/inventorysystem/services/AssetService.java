@@ -5,6 +5,7 @@ import org.example.inventorysystem.models.Asset;
 import org.example.inventorysystem.respositories.AssetRespository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,6 +49,15 @@ public class AssetService {
 			} else {
 				throw new IllegalArgumentException("Asset does not exist");
 			}
+		}
+	}
+
+	public List<Asset> findAllAssets() {
+		List<Asset> assets = assetRespository.findAll();
+		if(assets.isEmpty()){
+			throw new IllegalArgumentException("No assets found");
+		} else {
+			return assets;
 		}
 	}
 }
