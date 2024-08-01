@@ -28,9 +28,9 @@ public class AcquisitionService {
 		return acquisitionRepository.save(acquisition);
 	}
 
-	public void deleteAcquisition(Acquisition acquisition) {
-		if(acquisitionRepository.existsById(acquisition.getId())){
-			acquisitionRepository.delete(acquisition);
+	public void deleteAcquisitionById(long id) {
+		if(acquisitionRepository.existsById(id)){
+			acquisitionRepository.deleteById(id);
 		} else {
 			throw new IllegalArgumentException("Acquisition does not exist");
 		}
@@ -52,7 +52,7 @@ public class AcquisitionService {
 	public List<Acquisition> getAllAcquisitions() {
 		List<Acquisition> acquisitions = acquisitionRepository.findAll();
 		if(acquisitions.isEmpty()){
-			throw new IllegalArgumentException("No acquisitions found");
+			throw new RuntimeException("No acquisitions found");
 		} else {
 			return acquisitions;
 		}
