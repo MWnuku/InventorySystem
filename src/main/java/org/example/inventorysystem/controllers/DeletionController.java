@@ -18,13 +18,23 @@ public class DeletionController {
 	}
 
 	@PostMapping("/")
-	public Deletion addDeletion(@RequestBody final Deletion deletion) {
-		return deletionService.addDeletion(deletion);
+	public ResponseEntity<?> addDeletion(@RequestBody final Deletion deletion) {
+		try {
+			Deletion addedDeletion = deletionService.addDeletion(deletion);
+			return new ResponseEntity<>(addedDeletion, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping("/update")
-	public Deletion updateDeletion(@RequestBody final Deletion deletion) {
-		return deletionService.updateDeletion(deletion);
+	public ResponseEntity<?> updateDeletion(@RequestBody final Deletion deletion) {
+		try {
+			Deletion updatedDeletion = deletionService.updateDeletion(deletion);
+			return new ResponseEntity<>(updatedDeletion, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@DeleteMapping("/{id}")
@@ -38,12 +48,22 @@ public class DeletionController {
 	}
 
 	@GetMapping("/")
-	public List<Deletion> getAllDeletions() {
-		return deletionService.getAllDeletions();
+	public ResponseEntity<?> getAllDeletions() {
+		try {
+			List<Deletion> deletions = deletionService.getAllDeletions();
+			return new ResponseEntity<>(deletions, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@GetMapping("/{id}")
-	public Deletion getDeletionById(@PathVariable final long id) {
-		return deletionService.getDeletionById(id);
+	public ResponseEntity<?> getDeletionById(@PathVariable final long id) {
+		try {
+			Deletion deletion = deletionService.getDeletionById(id);
+			return new ResponseEntity<>(deletion, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 }

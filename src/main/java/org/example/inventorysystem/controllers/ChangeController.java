@@ -18,19 +18,29 @@ public class ChangeController {
 	}
 
 	@PostMapping("/")
-	public Change addChange(@RequestBody Change change) {
-		return changeService.addChange(change);
+	public ResponseEntity<?> addChange(@RequestBody Change change) {
+		try {
+			Change addedChange = changeService.addChange(change);
+			return new ResponseEntity<>(addedChange, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping("/update")
-	public Change updateChange(@RequestBody Change change) {
-		return changeService.updateChange(change);
+	public ResponseEntity<?> updateChange(@RequestBody Change change) {
+		try {
+			Change updatedChange = changeService.updateChange(change);
+			return new ResponseEntity<>(updatedChange, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
-	@DeleteMapping("/")
-	public ResponseEntity<?> deleteChange(@RequestBody Change change) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteChangeById(@PathVariable long id) {
 		try {
-			changeService.deleteChangeById(change.getId());
+			changeService.deleteChangeById(id);
 			return new ResponseEntity<>("Change deleted", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,12 +48,22 @@ public class ChangeController {
 	}
 
 	@GetMapping("/")
-	public List<Change> getAllChanges() {
-		return changeService.getAllChanges();
+	public ResponseEntity<?> getAllChanges() {
+		try {
+			List<Change> changes = changeService.getAllChanges();
+			return new ResponseEntity<>(changes, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@GetMapping("/{id}")
-	public Change getChangeById(@PathVariable long id) {
-		return changeService.getChangeById(id);
+	public ResponseEntity<?> getChangeById(@PathVariable long id) {
+		try {
+			Change change = changeService.getChangeById(id);
+			return new ResponseEntity<>(change, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 }

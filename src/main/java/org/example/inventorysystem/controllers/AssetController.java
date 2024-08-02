@@ -18,19 +18,29 @@ public class AssetController {
 	}
 
 	@PostMapping("/")
-	public Asset addAsset(@RequestBody Asset asset) {
-		return assetService.addAsset(asset);
+	public ResponseEntity<?> addAsset(@RequestBody Asset asset) {
+		try {
+			Asset addedAsset = assetService.addAsset(asset);
+			return new ResponseEntity<>(addedAsset, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping("/update")
-	public Asset updateAsset(@RequestBody Asset asset) {
-		return assetService.updateAsset(asset);
+	public ResponseEntity<?> updateAsset(@RequestBody Asset asset) {
+		try {
+			Asset updatedAsset = assetService.updateAsset(asset);
+			return new ResponseEntity<>(updatedAsset, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
-	@DeleteMapping("/")
-	public ResponseEntity<?> deleteAsset(@RequestBody Asset asset) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteAsset(@PathVariable long id) {
 		try {
-			assetService.deleteAsset(asset);
+			assetService.deleteAssetById(id);
 			return new ResponseEntity<>("Asset deleted", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -38,12 +48,22 @@ public class AssetController {
 	}
 
 	@GetMapping("/")
-	public List<Asset> getAllAssets() {
-		return assetService.findAllAssets();
+	public ResponseEntity<?> getAllAssets() {
+		try {
+			List<Asset> assets = assetService.findAllAssets();
+			return new ResponseEntity<>(assets, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@GetMapping("/{id}")
-	public Asset getAssetById(@PathVariable long id) {
-		return assetService.findAssetById(id);
+	public ResponseEntity<?> getAssetById(@PathVariable long id) {
+		try {
+			Asset asset = assetService.findAssetById(id);
+			return new ResponseEntity<>(asset, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 }

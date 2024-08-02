@@ -32,11 +32,11 @@ public class AssetService {
 		return assetRespository.save(asset);
 	}
 
-	public void deleteAsset(Asset asset) {
-		if(!assetRespository.existsById(asset.getId())){
+	public void deleteAssetById(long id) {
+		if(!assetRespository.existsById(id)){
 			throw new IllegalArgumentException("Asset id does not exist");
 		}
-		assetRespository.delete(asset);
+		assetRespository.deleteById(id);
 	}
 
 	public Asset findAssetById(Long id) {

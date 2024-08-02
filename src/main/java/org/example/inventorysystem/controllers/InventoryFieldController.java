@@ -18,13 +18,23 @@ public class InventoryFieldController {
 	}
 
 	@PostMapping("/")
-	public InventoryField addField(@RequestBody InventoryField field) {
-		return inventoryFieldService.addInventoryField(field);
+	public ResponseEntity<?> addField(@RequestBody InventoryField field) {
+		try {
+			InventoryField addedField = inventoryFieldService.addInventoryField(field);
+			return new ResponseEntity<>(addedField, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping("/update")
-	public InventoryField updateField(@RequestBody InventoryField field) {
-		return inventoryFieldService.updateInventoryField(field);
+	public ResponseEntity<?> updateField(@RequestBody InventoryField field) {
+		try {
+			InventoryField updatedField = inventoryFieldService.updateInventoryField(field);
+			return new ResponseEntity<>(updatedField, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@DeleteMapping("/{id}")
@@ -38,12 +48,22 @@ public class InventoryFieldController {
 	}
 
 	@GetMapping("/")
-	public List<InventoryField> getAllFields() {
-		return inventoryFieldService.getAllInventoryFields();
+	public ResponseEntity<?> getAllFields() {
+		try {
+			List<InventoryField> fields = inventoryFieldService.getAllInventoryFields();
+			return new ResponseEntity<>(fields, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
-	@GetMapping("{id}")
-	public InventoryField getField(@PathVariable long id) {
-		return inventoryFieldService.getInventoryFieldById(id);
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getField(@PathVariable long id) {
+		try {
+			InventoryField field = inventoryFieldService.getInventoryFieldById(id);
+			return new ResponseEntity<>(field, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 }

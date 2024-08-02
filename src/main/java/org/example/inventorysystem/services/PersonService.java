@@ -27,9 +27,9 @@ public class PersonService {
 		}
 	}
 
-	public void deletePerson(Person person) {
-		if(personRepository.existsById(person.getId())){
-			personRepository.deleteById(person.getId());
+	public void deletePersonById(long id) {
+		if(personRepository.existsById(id)){
+			personRepository.deleteById(id);
 		} else {
 			throw new IllegalArgumentException("Person not found");
 		}

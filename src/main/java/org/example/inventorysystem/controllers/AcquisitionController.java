@@ -4,7 +4,6 @@ import org.example.inventorysystem.models.Acquisition;
 import org.example.inventorysystem.services.AcquisitionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,17 +18,27 @@ public class AcquisitionController {
 	}
 
 	@PostMapping("/")
-	public Acquisition addAcquisition(@RequestBody Acquisition acquisition) {
-		return acquisitionService.addAcquisition(acquisition);
+	public ResponseEntity<?> addAcquisition(@RequestBody Acquisition acquisition) {
+		try {
+			Acquisition addedAcquisition = acquisitionService.addAcquisition(acquisition);
+			return new ResponseEntity<>(addedAcquisition, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@PostMapping("/update")
-	public Acquisition updateAcquisition(@RequestBody Acquisition acquisition) {
-		return acquisitionService.updateAcquisition(acquisition);
+	public ResponseEntity<?> updateAcquisition(@RequestBody Acquisition acquisition) {
+		try {
+			Acquisition updatedAcquisition = acquisitionService.updateAcquisition(acquisition);
+			return new ResponseEntity<>(updatedAcquisition, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteAcquisition(@PathVariable long id) {
+	public ResponseEntity<?> deleteAcquisitionById(@PathVariable long id) {
 		try {
 			acquisitionService.deleteAcquisitionById(id);
 			return new ResponseEntity<>("Acquisition deleted", HttpStatus.OK);
@@ -39,12 +48,22 @@ public class AcquisitionController {
 	}
 
 	@GetMapping("/all")
-	public List<Acquisition> getAllAcquisitions() {
-		return acquisitionService.getAllAcquisitions();
+	public ResponseEntity<?> getAllAcquisitions() {
+		try {
+			List<Acquisition> acquisitions = acquisitionService.getAllAcquisitions();
+			return new ResponseEntity<>(acquisitions, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@GetMapping("/{id}")
-	public Acquisition getAcquisitionById(@PathVariable long id) {
-		return acquisitionService.findAcquisitionById(id);
+	public ResponseEntity<?> getAcquisitionById(@PathVariable long id) {
+		try {
+			Acquisition acquisition = acquisitionService.findAcquisitionById(id);
+			return new ResponseEntity<>(acquisition, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
 	}
 }
