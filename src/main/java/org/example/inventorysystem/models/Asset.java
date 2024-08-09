@@ -1,5 +1,6 @@
 package org.example.inventorysystem.models;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -32,4 +33,8 @@ public class Asset {
 	private AssetStatus status;
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<Room> rooms;
+	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private InventoryField inventoryField;
+	@Nullable
+	private Group group;
 }
