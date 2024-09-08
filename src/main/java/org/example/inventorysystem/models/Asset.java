@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,23 +19,33 @@ public class Asset {
 	@Setter(AccessLevel.NONE)
 	@Column(name = "asset_id")
 	private Long id;
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Person person;
+
 	private String symbol;
 	private Integer inventoryNumber;
 	private String name;
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	private List<Acquisition> acquisitions;
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	private List<Change> changes;
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	private List<Deletion> deletions;
+
+	@OneToMany(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<Acquisition> acquisitions = new ArrayList<>();
+
+	@OneToMany(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<Change> changes = new ArrayList<>();
+
+	@OneToMany(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<Deletion> deletions = new ArrayList<>();
+
+	@Nullable
 	private String adnotations;
 	private AssetStatus status;
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	private List<Room> rooms;
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+
+	@OneToMany(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	private List<Room> rooms = new ArrayList<>();
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	private InventoryField inventoryField;
+
 	@Nullable
 	private Group group;
 }

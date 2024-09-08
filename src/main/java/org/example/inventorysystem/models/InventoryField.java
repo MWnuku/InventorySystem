@@ -3,6 +3,7 @@ package org.example.inventorysystem.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,10 +19,11 @@ public class InventoryField {
 	@Column(name = "inventory_id")
 	private Long id;
 	private String number;
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(referencedColumnName = "person_id")
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "person_id")
 	private Person person;
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name = "asset_id")
-	private List<Asset> assets;
+
+	@OneToMany(mappedBy = "inventoryField", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+	private List<Asset> assets = new ArrayList<>();
 }
