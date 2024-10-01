@@ -4,6 +4,7 @@ import org.example.inventorysystem.models.*;
 import org.example.inventorysystem.respositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,9 +30,11 @@ public class DataLoader implements CommandLineRunner {
 	}
 
 	@Override
+	@Transactional
 	public void run(String... args) throws Exception {
 		InventoryField inventoryField = new InventoryField();
 		inventoryField.setNumber("A1234");
+		inventoryFieldRepository.save(inventoryField);
 
 		Person person = new Person();
 		person.setFirstName("Admin");
@@ -53,6 +56,7 @@ public class DataLoader implements CommandLineRunner {
 		asset.setDeletions(new ArrayList<>());
 		asset.setStatus(AssetStatus.Active);
 		asset.setRooms(new ArrayList<>());
+		asset.setType(Type.Intelectual);
 		assetRespository.save(asset);
 
 		ArrayList<Asset> assets = new ArrayList<>();

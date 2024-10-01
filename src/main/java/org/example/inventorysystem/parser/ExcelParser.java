@@ -6,9 +6,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.example.inventorysystem.models.Asset;
-import org.example.inventorysystem.models.Group;
+import org.example.inventorysystem.models.Type;
 import org.example.inventorysystem.models.InventoryField;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STRestartNumber;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,7 +32,7 @@ public class ExcelParser {
 			InventoryField inventoryField = new InventoryField();
 
 
-			asset.setGroup(Group.getGroup(group));
+			asset.setType(Type.getGroup(group));
 			asset.setInventoryNumber(invNr);
 			asset.setName(row.getCell(++cell).getStringCellValue());
 		}

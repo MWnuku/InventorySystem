@@ -27,13 +27,13 @@ public class Asset {
 	private Integer inventoryNumber;
 	private String name;
 
-	@OneToMany(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
 	private List<Acquisition> acquisitions = new ArrayList<>();
 
-	@OneToMany(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
 	private List<Change> changes = new ArrayList<>();
 
-	@OneToMany(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
 	private List<Deletion> deletions = new ArrayList<>();
 
 	@Nullable
@@ -47,5 +47,5 @@ public class Asset {
 	private InventoryField inventoryField;
 
 	@Nullable
-	private Group group;
+	private Type type;
 }
