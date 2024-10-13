@@ -50,6 +50,7 @@ public class DataLoader implements CommandLineRunner {
 		asset.setPerson(person);
 		asset.setInventoryField(inventoryField);
 		asset.setSymbol("symbol");
+		asset.setInventoryNumber(1234);
 		asset.setName("Name");
 		asset.setAcquisitions(new ArrayList<>());
 		asset.setChanges(new ArrayList<>());

@@ -31,8 +31,8 @@ public class Person implements UserDetails {
 	@OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
 	@JsonIdentityReference(alwaysAsId = true)
 	private List<InventoryField> inventoryFieldList;
-
-	private Role role;
+	@Enumerated(EnumType.STRING)
+	private Role role = Role.User;
 
 	public void addInventoryField(InventoryField inventoryField) {
 		if (inventoryField != null) {
