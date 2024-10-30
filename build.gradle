@@ -35,6 +35,9 @@ dependencies {
 	implementation 'org.apache.poi:poi:5.2.5'
 	implementation 'org.apache.poi:poi-ooxml:5.3.0'
 	implementation 'org.apache.poi:poi-ooxml-schemas:4.1.2'
+	implementation 'org.postgresql:postgresql:42.7.3'
+	// update to the latest version if needed
+
 }
 
 tasks.named('test') {
