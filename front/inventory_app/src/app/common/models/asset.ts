@@ -13,7 +13,7 @@ import {Room} from './room';
 import {
   InventoryField
 } from './inventory-field';
-import {TypeEnum} from '../../type';
+import {TypeEnum} from '../enumes/typeEnum';
 
 export interface Asset {
   id: Number,

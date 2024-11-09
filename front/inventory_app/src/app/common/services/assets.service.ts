@@ -12,5 +12,17 @@ import {
 })
 export class AssetsService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+  private url = environment.apiUrl;
+
+  private getHeaders(): HttpHeaders {
+    const token = sessionStorage.getItem('access_token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  }
+
+  getAssets(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/asset`, { headers: this.getHeaders() });
+  }
 }

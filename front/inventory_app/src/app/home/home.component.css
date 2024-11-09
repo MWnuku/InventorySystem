@@ -1,0 +1,17 @@
+.assets-list-card {
+  width: 45%;
+  float: left;
+}
+
+.edit-section {
+  width: 45%;
+  float: left;
+  margin-left: 5%;
+}
+
+@media (max-width: 768px) {
+  .assets-list-card, .edit-section {
+    width: 100%;
+    margin-left: 0;
+  }
+}
