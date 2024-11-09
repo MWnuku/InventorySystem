@@ -66,4 +66,24 @@ public class AssetController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
+
+	@GetMapping("/{name}")
+	public ResponseEntity<?> getAssetByName(@PathVariable String name) {
+		try {
+			Asset asset = assetService.findAssetByName(name);
+			return new ResponseEntity<>(asset, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping("/{symbol}")
+	public ResponseEntity<?> getAssetBySymbol(@PathVariable String symbol) {
+		try {
+			Asset asset = assetService.findAssetBySymbol(symbol);
+			return new ResponseEntity<>(asset, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+	}
 }

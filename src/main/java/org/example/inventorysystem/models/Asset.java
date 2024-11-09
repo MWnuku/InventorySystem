@@ -1,5 +1,7 @@
 package org.example.inventorysystem.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
@@ -21,6 +23,7 @@ public class Asset {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonBackReference
 	private Person person;
 
 	private String symbol;
@@ -28,12 +31,15 @@ public class Asset {
 	private String name;
 
 	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
+	@JsonManagedReference
 	private List<Acquisition> acquisitions = new ArrayList<>();
 
 	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
+	@JsonManagedReference
 	private List<Change> changes = new ArrayList<>();
 
 	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
+	@JsonManagedReference
 	private List<Deletion> deletions = new ArrayList<>();
 
 	@Nullable
@@ -41,9 +47,11 @@ public class Asset {
 	private AssetStatus status;
 
 	@OneToMany(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JsonManagedReference
 	private List<Room> rooms = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private InventoryField inventoryField;
 
 	@Nullable

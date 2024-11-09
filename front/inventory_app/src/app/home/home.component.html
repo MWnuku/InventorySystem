@@ -1,1 +1,53 @@
-<p>home works!</p>
+<mat-card class="assets-list-card">
+  <mat-card-header>
+    <mat-card-title>Lista Assetów</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="filter">
+      <mat-form-field appearance="fill">
+        <mat-label>Filtruj po symbolu</mat-label>
+        <input matInput [(ngModel)]="filterSymbol" placeholder="Wyszukaj...">
+      </mat-form-field>
+    </div>
+    <table mat-table [dataSource]="filteredAssets" class="mat-elevation-z8">
+      <ng-container matColumnDef="symbol">
+        <th mat-header-cell *matHeaderCellDef>Symbol</th>
+        <td mat-cell *matCellDef="let asset">{{ asset.symbol }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nazwa</th>
+        <td mat-cell *matCellDef="let asset">{{ asset.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="inventory_number">
+        <th mat-header-cell *matHeaderCellDef>Numer inwentaryzacyjny</th>
+        <td mat-cell *matCellDef="let asset">{{ asset.inventory_number }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="adnotations">
+        <th mat-header-cell *matHeaderCellDef>Adnotacje</th>
+        <td mat-cell *matCellDef="let asset">{{ asset.adnotations }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="asset_status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let asset">{{ asset.asset_status }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Akcje</th>
+        <td mat-cell *matCellDef="let asset">
+          <button mat-button (click)="editAsset(asset)">Edytuj</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+
+<div class="edit-section" *ngIf="selectedAsset">
+  <app-asset-edit [asset]="selectedAsset"></app-asset-edit>
+</div>

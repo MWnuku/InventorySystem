@@ -1,0 +1,25 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Edytuj Asset</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form #assetForm="ngForm">
+      <mat-form-field appearance="fill">
+        <mat-label>Symbol</mat-label>
+        <input matInput [(ngModel)]="asset.symbol" name="symbol" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Nazwa</mat-label>
+        <input matInput [(ngModel)]="asset.name" name="name" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Data zakupu</mat-label>
+        <input matInput [(ngModel)]="asset.acquisitions[0].date" name="acquisitionDate" required />
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" (click)="saveAsset()">Zapisz</button>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -1,5 +1,6 @@
 package org.example.inventorysystem.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +26,6 @@ public class InventoryField {
 	private Person person;
 
 	@OneToMany(mappedBy = "inventoryField", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+	@JsonBackReference
 	private List<Asset> assets = new ArrayList<>();
 }

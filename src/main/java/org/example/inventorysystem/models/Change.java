@@ -1,5 +1,6 @@
 package org.example.inventorysystem.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +19,7 @@ public class Change {
 	@Column(name = "change_id")
 	private Long id;
 	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JsonBackReference
 	private Asset asset;
 	private String description;
 	private LocalDate date;
