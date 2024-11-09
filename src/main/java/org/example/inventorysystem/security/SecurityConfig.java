@@ -3,39 +3,58 @@ package org.example.inventorysystem.security;
 import org.example.inventorysystem.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
 	private final UserDetailsServiceImpl userDetailsService;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-	public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl) {
+	public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, JwtAuthenticationFilter jwtAuthenticationFilter) {
 		this.userDetailsService = userDetailsServiceImpl;
+		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 	}
+	@Configuration
+	public class WebConfig implements WebMvcConfigurer {
 
-	@Bean // Indicates that this method returns a Spring bean.
+		@Override
+		public void addCorsMappings(CorsRegistry registry) {
+			// Pozwól na dostęp do wszystkich ścieżek z dowolnej domeny
+			registry.addMapping("/**") // Ustawiasz do jakich endpointów CORS ma być dostępny
+					.allowedOrigins("http://localhost:4200") // Możesz dodać inne domeny
+					.allowedMethods("GET", "POST", "PUT", "DELETE") // Ustawić metody HTTP, które są dozwolone
+					.allowedHeaders("*") // Pozwól na wszystkie nagłówki
+					.allowCredentials(true); // Jeśli masz wymaganie co do przesyłania ciasteczek / tokenów
+		}
+	}
+	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-				.csrf(AbstractHttpConfigurer::disable) // Disables CSRF protection, common in stateless REST APIs.
-				.authorizeRequests(authorize -> authorize
-						.requestMatchers(new AntPathRequestMatcher("/user", "POST")).permitAll() // Allow POST requests to /user without authentication
-						.anyRequest().authenticated() // Ensures all requests are authenticated.
+				.authorizeRequests(auth -> auth
+						.requestMatchers("/auth/login").permitAll()
+						.anyRequest().authenticated()
 				)
-				.httpBasic(withDefaults()) // Enables HTTP Basic Authentication with default settings.
+				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session
-						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // Configures session management to be stateless.
-		return http.build(); // Builds and returns the SecurityFilterChain.
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				);
+
+		http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return http.build();
 	}
 
 	@Bean
@@ -43,4 +62,10 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+		AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+		return authenticationManagerBuilder.build();
+	}
 }

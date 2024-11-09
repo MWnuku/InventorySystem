@@ -24,7 +24,7 @@ public class AdminInitializer {
 	@Bean
 	public CommandLineRunner initAdminUser(PersonRepository personRepository) {
 		return args -> {
-			// Check if an admin user already exists
+
 			Optional<Person> adminUserOptional = personRepository.findByEmail("admin123@example" +
 					".com");
 			if (adminUserOptional.isEmpty()) {
