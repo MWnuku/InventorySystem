@@ -2,24 +2,65 @@
   <mat-card-header>
     <mat-card-title>Edytuj Asset</mat-card-title>
   </mat-card-header>
+
   <mat-card-content>
-    <form #assetForm="ngForm">
-      <mat-form-field appearance="fill">
+    <form [formGroup]="assetForm" (ngSubmit)="saveAsset()">
+
+      <!-- Symbol -->
+      <mat-form-field appearance="fill" class="form-field">
         <mat-label>Symbol</mat-label>
-        <input matInput [(ngModel)]="asset.symbol" name="symbol" required />
+        <input matInput formControlName="symbol" required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <!-- Nazwa -->
+      <mat-form-field appearance="fill" class="form-field">
         <mat-label>Nazwa</mat-label>
-        <input matInput [(ngModel)]="asset.name" name="name" required />
+        <input matInput formControlName="name" required />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <!-- Data zakupu -->
+      <mat-form-field appearance="fill" class="form-field">
         <mat-label>Data zakupu</mat-label>
-        <input matInput [(ngModel)]="asset.acquisitions[0].date" name="acquisitionDate" required />
+        <input matInput formControlName="acquisitionDate" required />
       </mat-form-field>
 
-      <button mat-raised-button color="primary" (click)="saveAsset()">Zapisz</button>
+      <!-- Adnotations (opcjonalne) -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Adnotations</mat-label>
+        <textarea matInput formControlName="adnotations"></textarea>
+      </mat-form-field>
+
+      <!-- Status -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Status</mat-label>
+        <input matInput formControlName="status" required />
+      </mat-form-field>
+
+      <!-- Rooms (list of rooms) -->
+      <div formArrayName="rooms">
+        <div *ngFor="let room of rooms.controls; let i = index" [formGroupName]="i">
+          <mat-form-field appearance="fill">
+            <mat-label>Room {{i + 1}} Name</mat-label>
+            <input matInput formControlName="name" required />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Inventory Field -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Inventory Field</mat-label>
+        <input matInput formControlName="inventoryField" required />
+      </mat-form-field>
+
+      <!-- Type (optional) -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Type</mat-label>
+        <input matInput formControlName="type" />
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit">Zapisz</button>
+      </div>
     </form>
   </mat-card-content>
 </mat-card>

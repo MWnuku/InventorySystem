@@ -1,7 +1,6 @@
 package org.example.inventorysystem.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
@@ -51,7 +50,8 @@ public class Asset {
 	private List<Room> rooms = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonManagedReference
+	@JsonIdentityReference(alwaysAsId = true)
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	private InventoryField inventoryField;
 
 	@Nullable

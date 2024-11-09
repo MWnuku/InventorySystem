@@ -1,6 +1,8 @@
 package org.example.inventorysystem.models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,6 +32,7 @@ public class Person implements UserDetails {
 
 	@OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
 	@JsonIdentityReference(alwaysAsId = true)
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	private List<InventoryField> inventoryFieldList;
 	@Enumerated(EnumType.STRING)
 	private Role role = Role.User;

@@ -1,0 +1,25 @@
+/* Styl dla kontenera formularza */
+mat-card {
+  width: 100%;
+  max-width: 600px;  /* Maksymalna szerokość formularza */
+  margin: 0 auto;    /* Wyśrodkowanie formularza */
+  padding: 16px;
+}
+
+/* Styl dla każdego pola formularza */
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 16px; /* Odstęp pomiędzy polami */
+}
+
+/* Styl dla przycisku zapisz */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+button {
+  width: 100%;
+  max-width: 200px;  /* Maksymalna szerokość przycisku */
+}

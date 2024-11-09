@@ -36,7 +36,7 @@ public class AdminInitializer {
 				adminUser.setPassword(passwordEncoder.encode("admin1234")); // Set default password
 				adminUser.setRole(Role.Admin); // Assign admin role
 				personRepository.save(adminUser);
-				System.out.println("Admin user created with email: admin@example.com and password: admin123");
+				System.out.println("Admin user created with email: admin123@example.com and password: admin1234");
 			}
 		};
 	}

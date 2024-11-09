@@ -47,7 +47,7 @@ public class AcquisitionController {
 		}
 	}
 
-	@GetMapping("/all")
+	@GetMapping("/")
 	public ResponseEntity<?> getAllAcquisitions() {
 		try {
 			List<Acquisition> acquisitions = acquisitionService.getAllAcquisitions();

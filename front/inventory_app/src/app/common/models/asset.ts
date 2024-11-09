@@ -16,17 +16,17 @@ import {
 import {TypeEnum} from '../enumes/typeEnum';
 
 export interface Asset {
-  id: Number,
-  name: String,
-  person: Person,
-  symbol: String,
-  inventory_number: Number,
-  acquisitions: Array<Acquisition>,
-  changes: Array<Change>,
-  deletions: Array<Deletion>,
-  adnotations: String,
-  asset_status: AssetStatus,
-  rooms: Array<Room>,
-  inventory_field: InventoryField,
-  type: TypeEnum;
+  id: number;
+  person: Person;
+  symbol: string;
+  inventoryNumber: number;
+  name: string;
+  acquisitions: Acquisition[];
+  changes: Change[];
+  deletions: Deletion[];
+  adnotations?: string;
+  status: AssetStatus;
+  rooms: Room[];
+  inventoryField: InventoryField;
+  type?: TypeEnum;
 }

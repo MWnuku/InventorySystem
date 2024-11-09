@@ -7,6 +7,9 @@ import {
 import {
   environment
 } from '../../environment/environment';
+import {
+  EditAsset
+} from '../models/asset-edit';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +26,10 @@ export class AssetsService {
   }
 
   getAssets(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.url}/asset`, { headers: this.getHeaders() });
+    return this.http.get<any[]>(`${this.url}/asset/`, { headers: this.getHeaders() });
+  }
+
+  updateAsset(asset: EditAsset): Observable<EditAsset> {
+    return this.http.post<EditAsset>(`${this.url}/update`, asset, { headers: this.getHeaders() });
   }
 }

@@ -3,6 +3,7 @@ package org.example.inventorysystem;
 import org.example.inventorysystem.models.*;
 import org.example.inventorysystem.respositories.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +19,9 @@ public class DataLoader implements CommandLineRunner {
 	private final InventoryFieldRepository inventoryFieldRepository;
 	private final PersonRepository personRepository;
 	private final RoomRepository roomRepository;
+	private final PasswordEncoder passwordEncoder;
 
-	public DataLoader(AcquisitionRepository acquisitionRepository, AssetRespository assetRespository, ChangeRepository changeRepository, DeletitionRepository deletionRepository, InventoryFieldRepository inventoryFieldRepository, PersonRepository personRepository, RoomRepository roomRepository) {
+	public DataLoader(AcquisitionRepository acquisitionRepository, AssetRespository assetRespository, ChangeRepository changeRepository, DeletitionRepository deletionRepository, InventoryFieldRepository inventoryFieldRepository, PersonRepository personRepository, RoomRepository roomRepository, PasswordEncoder passwordEncoder) {
 		this.acquisitionRepository = acquisitionRepository;
 		this.assetRespository = assetRespository;
 		this.changeRepository = changeRepository;
@@ -27,6 +29,7 @@ public class DataLoader implements CommandLineRunner {
 		this.inventoryFieldRepository = inventoryFieldRepository;
 		this.personRepository = personRepository;
 		this.roomRepository = roomRepository;
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	@Override
@@ -41,7 +44,7 @@ public class DataLoader implements CommandLineRunner {
 		person.setLastName("Admin");
 		person.setEmail("admin@mail.com");
 		person.setUnit("Admin");
-		person.setPassword("password");
+		person.setPassword(passwordEncoder.encode("admin123"));
 		person.setInventoryFieldList(new ArrayList<>());
 		person.setRole(Role.Admin);
 		personRepository.save(person);

@@ -11,6 +11,7 @@ import {
 import {
   HttpClient, HttpHeaders
 } from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,10 @@ import {
 export class AuthService {
 
   private url = environment.apiUrl + '/auth';
-  private loggedInStatus = new BehaviorSubject<boolean>(this.hasToken());
+   loggedInStatus = new BehaviorSubject<boolean>(this.hasToken());
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private router: Router) { }
   login(credentials: { username: string; password: string }): Observable<any> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8'
@@ -41,4 +43,11 @@ export class AuthService {
   public hasToken(): boolean {
     return !!sessionStorage.getItem('access_token');
   }
+  logout(): void {
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('user_role');
+    this.loggedInStatus.next(false); // Update login status
+    this.router.navigate(['/login']);
+  }
+
 }
