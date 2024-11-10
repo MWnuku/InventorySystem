@@ -57,7 +57,7 @@ public class AssetService {
 		if(asset.getRooms() != null){
 			asset1.setRooms(asset.getRooms());
 		}
-		return assetRespository.save(asset);
+		return assetRespository.save(asset1);
 	}
 
 	public void deleteAssetById(long id) {

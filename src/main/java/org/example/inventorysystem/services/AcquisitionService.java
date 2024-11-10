@@ -25,7 +25,25 @@ public class AcquisitionService {
 		} else if(!acquisitionRepository.existsById(acquisition.getId())){
 			throw new IllegalArgumentException("Acquisition does not exist");
 		}
-		return acquisitionRepository.save(acquisition);
+		Acquisition acquisition1 = acquisitionRepository.findById(acquisition.getId()).get();
+		updateAcquisitionFields(acquisition1, acquisition);
+		return acquisitionRepository.save(acquisition1);
+	}
+
+	private Acquisition updateAcquisitionFields(Acquisition existingAcquisition, Acquisition newAcquisitionData) {
+		if (newAcquisitionData.getDescription() != null) {
+			existingAcquisition.setDescription(newAcquisitionData.getDescription());
+		}
+		if (newAcquisitionData.getDate() != null) {
+			existingAcquisition.setDate(newAcquisitionData.getDate());
+		}
+		if (newAcquisitionData.getValue() != null) {
+			existingAcquisition.setValue(newAcquisitionData.getValue());
+		}
+		if (newAcquisitionData.getAsset() != null) {
+			existingAcquisition.setAsset(newAcquisitionData.getAsset());
+		}
+		return existingAcquisition;
 	}
 
 	public void deleteAcquisitionById(long id) {

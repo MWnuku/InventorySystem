@@ -46,10 +46,29 @@ public class DeletionService {
 	}
 
 	public Deletion updateDeletion(Deletion deletion) {
-		if(deletionRepository.existsById(deletion.getId())) {
-			return deletionRepository.save(deletion);
-		} else {
+		if (deletion.getId() == null) {
+			throw new IllegalArgumentException("Deletion id cannot be null");
+		} else if(!deletionRepository.existsById(deletion.getId())) {
 			throw new RuntimeException("No deletion found");
 		}
+		Deletion updatedDeletion = deletionRepository.findById(deletion.getId()).get();
+		updateDeletionFields(updatedDeletion, deletion);
+		return deletionRepository.save(updatedDeletion);
+	}
+
+	private Deletion updateDeletionFields(Deletion existingDeletion, Deletion newDeletionData) {
+		if (newDeletionData.getDescription() != null) {
+			existingDeletion.setDescription(newDeletionData.getDescription());
+		}
+		if (newDeletionData.getDate() != null) {
+			existingDeletion.setDate(newDeletionData.getDate());
+		}
+		if (newDeletionData.getValue() != null) {
+			existingDeletion.setValue(newDeletionData.getValue());
+		}
+		if (newDeletionData.getAsset() != null) {
+			existingDeletion.setAsset(newDeletionData.getAsset());
+		}
+		return existingDeletion;
 	}
 }

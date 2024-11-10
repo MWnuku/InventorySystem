@@ -46,10 +46,29 @@ public class ChangeService {
 	}
 
 	public Change updateChange(Change change) {
-		if(changeRepository.existsById(change.getId())) {
-			return changeRepository.save(change);
-		} else {
-			throw new RuntimeException("Change not found");
+		if (change.getId() == null) {
+			throw new IllegalArgumentException("Change id cannot be null");
+		} else if(!changeRepository.existsById(change.getId())) {
+			throw new IllegalArgumentException("Change not found");
 		}
+		Change change1 = changeRepository.findById(change.getId()).get();
+		updateChangeFields(change1, change);
+		return changeRepository.save(change1);
+	}
+
+	private Change updateChangeFields(Change existingChange, Change newChangeData) {
+		if (newChangeData.getDescription() != null) {
+			existingChange.setDescription(newChangeData.getDescription());
+		}
+		if (newChangeData.getDate() != null) {
+			existingChange.setDate(newChangeData.getDate());
+		}
+		if (newChangeData.getValue() != null) {
+			existingChange.setValue(newChangeData.getValue());
+		}
+		if (newChangeData.getAsset() != null) {
+			existingChange.setAsset(newChangeData.getAsset());
+		}
+		return existingChange;
 	}
 }

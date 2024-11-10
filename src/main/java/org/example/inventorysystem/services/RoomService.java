@@ -20,11 +20,33 @@ public class RoomService {
 	}
 
 	public Room updateRoom(Room room) {
-		if(roomRepository.existsById(room.getId())) {
-			return roomRepository.save(room);
-		} else {
+		if (room.getId() == null) {
+			throw new IllegalArgumentException("Room id cannot be null");
+		} else if(!roomRepository.existsById(room.getId())) {
 			throw new IllegalArgumentException("Room not found");
 		}
+		Room existingRoom = roomRepository.findById(room.getId()).get();
+		updateRoomFields(existingRoom, room);
+		return roomRepository.save(existingRoom);
+	}
+
+	private Room updateRoomFields(Room existingRoom, Room newRoomData) {
+		if (newRoomData.getBuilding() != null) {
+			existingRoom.setBuilding(newRoomData.getBuilding());
+		}
+		if (newRoomData.getSymbol() != null) {
+			existingRoom.setSymbol(newRoomData.getSymbol());
+		}
+		if (newRoomData.getDateFrom() != null) {
+			existingRoom.setDateFrom(newRoomData.getDateFrom());
+		}
+		if (newRoomData.getDateTo() != null) {
+			existingRoom.setDateTo(newRoomData.getDateTo());
+		}
+		if (newRoomData.getAsset() != null) {
+			existingRoom.setAsset(newRoomData.getAsset());
+		}
+		return existingRoom;
 	}
 
 	public void deleteRoom(long id) {

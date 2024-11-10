@@ -38,11 +38,27 @@ public class InventoryFieldService {
 	}
 
 	public InventoryField updateInventoryField(InventoryField inventoryField) {
-		if(inventoryFieldRepository.existsById(inventoryField.getId())) {
-			return inventoryFieldRepository.save(inventoryField);
-		} else {
+		if (inventoryField.getId() == null) {
+			throw new IllegalArgumentException("InventoryField id cannot be null");
+		} else if(!inventoryFieldRepository.existsById(inventoryField.getId())) {
 			throw new RuntimeException("No inventory field found with id " + inventoryField.getId());
 		}
+		InventoryField existingInventoryField = inventoryFieldRepository.findById(inventoryField.getId()).get();
+		updateInventoryFieldFields(existingInventoryField, inventoryField);
+		return inventoryFieldRepository.save(existingInventoryField);
+	}
+
+	private InventoryField updateInventoryFieldFields(InventoryField existingInventoryField, InventoryField newInventoryFieldData) {
+		if (newInventoryFieldData.getNumber() != null) {
+			existingInventoryField.setNumber(newInventoryFieldData.getNumber());
+		}
+		if (newInventoryFieldData.getPerson() != null) {
+			existingInventoryField.setPerson(newInventoryFieldData.getPerson());
+		}
+		if (newInventoryFieldData.getAssets() != null) {
+			existingInventoryField.setAssets(newInventoryFieldData.getAssets());
+		}
+		return existingInventoryField;
 	}
 
 	public void deleteInventoryField(long id) {
