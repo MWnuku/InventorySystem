@@ -1,0 +1,42 @@
+<mat-card class="inventory-field-list-card">
+  <mat-card-header>
+    <mat-card-title>Lista Pol Inwentaryzacyjnych</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content class="table-container">
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="inventoryFields" class="mat-elevation-z8">
+
+        <!-- Kolumna ID -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let field">{{ field.id }}</td>
+        </ng-container>
+
+        <!-- Kolumna Numer -->
+        <ng-container matColumnDef="number">
+          <th mat-header-cell *matHeaderCellDef> Numer </th>
+          <td mat-cell *matCellDef="let field">{{ field.number }}</td>
+        </ng-container>
+
+        <!-- Kolumna Osoba -->
+        <ng-container matColumnDef="person">
+          <th mat-header-cell *matHeaderCellDef> Osoba </th>
+          <td mat-cell *matCellDef="let field">{{ field.person?.firstName || 'Brak danych' }}</td>
+        </ng-container>
+
+        <!-- Kolumna Akcje -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Akcje </th>
+          <td mat-cell *matCellDef="let field">
+            <button mat-button color="primary" (click)="viewAssets(field.id)">Zobacz Assets</button>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Definition -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </mat-card-content>
+</mat-card>

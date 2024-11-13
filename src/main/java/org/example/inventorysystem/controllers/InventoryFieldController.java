@@ -66,4 +66,14 @@ public class InventoryFieldController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	@GetMapping("/{id}/assets")
+	public ResponseEntity<?> getFieldAssets(@PathVariable long id) {
+		try {
+			InventoryField field = inventoryFieldService.getInventoryFieldById(id);
+			return new ResponseEntity<>(field.getAssets(), HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

@@ -25,29 +25,29 @@ public class Asset {
 	@JsonBackReference
 	private Person person;
 
-	private String symbol;
+	//private String symbol;
 	private Integer inventoryNumber;
 	private String name;
 
-	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
-	@JsonManagedReference
-	private List<Acquisition> acquisitions = new ArrayList<>();
-
-	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
-	@JsonManagedReference
-	private List<Change> changes = new ArrayList<>();
-
-	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
-	@JsonManagedReference
-	private List<Deletion> deletions = new ArrayList<>();
+//	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
+//	@JsonManagedReference
+//	private List<Acquisition> acquisitions = new ArrayList<>();
+//
+//	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
+//	@JsonManagedReference
+//	private List<Change> changes = new ArrayList<>();
+//
+//	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
+//	@JsonManagedReference
+//	private List<Deletion> deletions = new ArrayList<>();
 
 	@Nullable
 	private String adnotations;
 	private AssetStatus status;
 
-	@OneToMany(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JsonManagedReference
-	private List<Room> rooms = new ArrayList<>();
+	private Room room;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIdentityReference(alwaysAsId = true)

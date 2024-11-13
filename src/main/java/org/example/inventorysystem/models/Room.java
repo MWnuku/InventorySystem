@@ -18,7 +18,7 @@ public class Room {
 	@Setter(AccessLevel.NONE)
 	@Column(name = "room_id")
 	private Long id;
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JsonBackReference
 	private Asset asset;
 	private String building;

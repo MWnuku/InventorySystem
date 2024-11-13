@@ -9,9 +9,13 @@ import {
   LoginComponent
 } from './login/login.component';
 import {AuthGuard} from './core/guard/auth.guard';
+import {
+  InventoryFieldComponent
+} from './inventory_field/inventory-field.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  { path: '', component: HomeComponent },
+  { path: 'assets', component: HomeComponent },
+  { path: '', component: InventoryFieldComponent },
 ];

@@ -7,7 +7,7 @@
     <!-- Filtr po symbolu -->
     <div class="filter" *ngIf="filteredAssets.length > 0">
       <mat-form-field appearance="fill">
-        <mat-label>Filtruj po symbolu</mat-label>
+        <mat-label>Wyszukaj symbol</mat-label>
         <input matInput [(ngModel)]="filterSymbol" placeholder="Wyszukaj symbol...">
         <button mat-icon-button matSuffix *ngIf="filterSymbol" (click)="filterSymbol = ''">
           <mat-icon>close</mat-icon>
