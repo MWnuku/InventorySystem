@@ -5,6 +5,7 @@ import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,21 +26,10 @@ public class Asset {
 	@JsonBackReference
 	private Person person;
 
-	//private String symbol;
 	private Integer inventoryNumber;
 	private String name;
-
-//	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
-//	@JsonManagedReference
-//	private List<Acquisition> acquisitions = new ArrayList<>();
-//
-//	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
-//	@JsonManagedReference
-//	private List<Change> changes = new ArrayList<>();
-//
-//	@OneToMany(mappedBy = "asset", cascade = {CascadeType.MERGE})
-//	@JsonManagedReference
-//	private List<Deletion> deletions = new ArrayList<>();
+	private Long value;
+	private LocalDate date;
 
 	@Nullable
 	private String adnotations;

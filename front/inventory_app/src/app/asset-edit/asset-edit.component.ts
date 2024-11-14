@@ -20,7 +20,7 @@ import {
 @Component({
   selector: 'app-asset-edit',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule, RouterModule, CommonModule, FormsModule],
+  imports: [MaterialModule, FormsModule, ReactiveFormsModule, RouterModule, CommonModule, FormsModule],
   templateUrl: './asset-edit.component.html',
   styleUrls: ['./asset-edit.component.css']
 })
@@ -32,7 +32,8 @@ export class AssetEditComponent implements OnInit {
     this.assetForm = this.fb.group({
       symbol: ['', [Validators.required]],
       name: ['', [Validators.required]],
-      acquisitionDate: ['', [Validators.required]],
+      date: ['', [Validators.required]],
+      value: [''],
       adnotations: [''],
       status: ['', [Validators.required]],
       rooms: this.fb.array([]),
@@ -46,7 +47,8 @@ export class AssetEditComponent implements OnInit {
     this.assetForm = this.fb.group({
       symbol: [this.asset?.symbol, [Validators.required]],
       name: [this.asset?.name, [Validators.required]],
-      acquisitionDate: [this.asset?.acquisitions[0]?.date, [Validators.required]],
+      date: [this.asset.date, [Validators.required]],
+      value: [this.asset.value, [Validators.required]],
       adnotations: [this.asset?.adnotations],
       status: [this.asset?.status, [Validators.required]],
       rooms: this.fb.array(this.asset?.rooms?.map((room: any) => this.fb.group({

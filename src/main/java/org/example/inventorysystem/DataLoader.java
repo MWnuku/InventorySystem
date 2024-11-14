@@ -49,19 +49,25 @@ public class DataLoader implements CommandLineRunner {
 		person.setRole(Role.Admin);
 		personRepository.save(person);
 
+		LocalDate date = LocalDate.now();
+		Room room = new Room();
+		room.setBuilding("Budynek A");
+		room.setSymbol("symbol");
+		room.setDateFrom(date);
+		room.setDateTo(date.plusDays(10));
+		roomRepository.save(room);
+
 		Asset asset = new Asset();
 		asset.setPerson(person);
 		asset.setInventoryField(inventoryField);
-		asset.setSymbol("symbol");
 		asset.setInventoryNumber(1234);
 		asset.setName("Name");
-		asset.setAcquisitions(new ArrayList<>());
-		asset.setChanges(new ArrayList<>());
-		asset.setDeletions(new ArrayList<>());
 		asset.setStatus(AssetStatus.Active);
-		asset.setRooms(new ArrayList<>());
+		asset.setRoom(room);
 		asset.setType(Type.Intelectual);
 		assetRespository.save(asset);
+		room.setAsset(asset);
+		roomRepository.save(room);
 
 		ArrayList<Asset> assets = new ArrayList<>();
 		assets.add(asset);
@@ -76,7 +82,6 @@ public class DataLoader implements CommandLineRunner {
 		Change change = new Change();
 		change.setAsset(asset);
 		change.setDescription("Description");
-		LocalDate date = LocalDate.now();
 		change.setDate(date);
 		change.setValue(123);
 		changeRepository.save(change);
@@ -94,14 +99,6 @@ public class DataLoader implements CommandLineRunner {
 		acquisition.setDate(date);
 		acquisition.setValue(123);
 		acquisitionRepository.save(acquisition);
-
-		Room room = new Room();
-		room.setAsset(asset);
-		room.setBuilding("Budynek A");
-		room.setSymbol("symbol");
-		room.setDateFrom(date);
-		room.setDateTo(date.plusDays(10));
-		roomRepository.save(room);
 
 	}
 }

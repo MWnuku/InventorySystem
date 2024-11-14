@@ -1,7 +1,4 @@
 import { Person } from './person';
-import { Acquisition } from './acquisition';
-import { Change } from './change';
-import { Deletion } from './deletion';
 import { AssetStatus } from './asset_status';
 import { Room } from './room';
 import { InventoryField } from './inventory-field';
@@ -13,9 +10,8 @@ export interface EditAsset {
   symbol: string;
   inventoryNumber: number;
   name: string;
-  acquisitions: Acquisition[];
-  changes: Change[];
-  deletions: Deletion[];
+  date: Date;
+  value: number;
   adnotations?: string;
   status: AssetStatus;
   rooms: Room[];

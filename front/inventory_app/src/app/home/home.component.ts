@@ -16,11 +16,14 @@ import { AssetsService } from '../common/services/assets.service';
 })
 export class HomeComponent {
   displayedColumns: string[] = [
-    'id', 'symbol', 'name', 'inventoryNumber', 'person', 'adnotations',
-    'status', 'rooms', 'acquisitions', 'changes', 'deletions', 'inventoryField', 'type', 'action'
+    'id', 'inventoryField', 'name', 'inventoryNumber', 'person', 'status',
+    'value', 'date', 'room', 'type', 'adnotations', 'action'
   ];
   assets: Asset[] = [];
   filterSymbol: string = '';
+  filterName: string = '';
+  filterInventoryNumber: string = '';
+  filterRoom: string = '';
   selectedAsset: Asset | null = null;
 
   constructor(private assetService: AssetsService) {}
@@ -38,13 +41,11 @@ export class HomeComponent {
 
   get filteredAssets() {
     return this.assets.filter(asset =>
-      asset.symbol.toLowerCase().includes(this.filterSymbol.toLowerCase())
+      asset.symbol.toLowerCase().includes(this.filterSymbol.toLowerCase()) &&
+      asset.name.toLowerCase().includes(this.filterName.toLowerCase()) &&
+      asset.inventoryNumber.toString().includes(this.filterInventoryNumber.toLowerCase()) &&
+      asset.room.symbol.toLowerCase().includes(this.filterRoom.toLowerCase())
     );
-  }
-
-  // Getter for the rooms
-  getRooms(asset: Asset): string {
-    return asset.rooms?.map(room => room.symbol).join(', ') || 'Brak danych';
   }
 
   editAsset(asset: Asset) {

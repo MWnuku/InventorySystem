@@ -28,7 +28,7 @@ public class Person implements UserDetails {
 	private String lastName;
 	private String password;
 	private String email;
-	private String unit;
+	private String unit; #todo add as modl
 
 	@OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
 	@JsonIdentityReference(alwaysAsId = true)

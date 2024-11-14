@@ -1,12 +1,5 @@
 import {Person} from './person';
 import {
-  Acquisition
-} from './acquisition';
-import {Change} from './change';
-import {
-  Deletion
-} from './deletion';
-import {
   AssetStatus
 } from './asset_status';
 import {Room} from './room';
@@ -21,12 +14,11 @@ export interface Asset {
   symbol: string;
   inventoryNumber: number;
   name: string;
-  acquisitions: Acquisition[];
-  changes: Change[];
-  deletions: Deletion[];
+  value: number;
+  date: Date;
   adnotations?: string;
   status: AssetStatus;
-  rooms: Room[];
+  room: Room;
   inventoryField: InventoryField;
   type?: TypeEnum;
 }
