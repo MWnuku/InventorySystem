@@ -16,9 +16,10 @@ import { AssetsService } from '../common/services/assets.service';
 })
 export class HomeComponent {
   displayedColumns: string[] = [
-    'id', 'inventoryField', 'name', 'inventoryNumber', 'person', 'status',
-    'value', 'date', 'room', 'type', 'adnotations', 'action'
+    'id', 'inventoryField', 'name', 'inventoryNumber', 'person',
+    'value', 'date', 'status', 'room', 'type', 'adnotations', 'action'
   ];
+
   assets: Asset[] = [];
   filterSymbol: string = '';
   filterName: string = '';
@@ -41,12 +42,69 @@ export class HomeComponent {
 
   get filteredAssets() {
     return this.assets.filter(asset =>
-      asset.symbol.toLowerCase().includes(this.filterSymbol.toLowerCase()) &&
-      asset.name.toLowerCase().includes(this.filterName.toLowerCase()) &&
-      asset.inventoryNumber.toString().includes(this.filterInventoryNumber.toLowerCase()) &&
-      asset.room.symbol.toLowerCase().includes(this.filterRoom.toLowerCase())
+      (asset.name && asset.name.toLowerCase().includes(this.filterName.toLowerCase())) &&
+      (asset.inventoryNumber && asset.inventoryNumber.toString().includes(this.filterInventoryNumber.toLowerCase())) &&
+      (asset.room && asset.room.symbol.toLowerCase().includes(this.filterRoom.toLowerCase()))
     );
   }
+
+  addAsset(): void {
+    const newAsset: Asset = {
+      id: this.assets.length + 1, // Temporary ID, adjust as needed
+      person: undefined,          // Use `undefined` instead of `null`
+      inventoryNumber: undefined,
+      name: '',
+      value: 0,
+      date: new Date(),
+      status: undefined,
+      room: undefined,
+      inventoryField: undefined,
+      type: undefined
+    };
+    this.assetService.addAsset(newAsset).subscribe(
+      (addedAsset) => {
+        this.assets.push(addedAsset); // Add the returned asset with ID to the list
+        this.selectedAsset = addedAsset;
+        console.log('Asset added:', addedAsset);
+      },
+      (error) => {
+        console.error('Error adding asset:', error);
+      }
+    );
+  }
+
+
+  deleteAsset(id: number): void {
+    if (confirm('Are you sure you want to delete this asset?')) {
+      this.assetService.deleteAsset(id).subscribe(() => {
+        console.log(`Asset with id ${id} deleted`);
+        this.assets = this.assets.filter(asset => asset.id !== id); // Update the UI after deletion
+      });
+    }
+  }
+
+
+  // Method to duplicate an asset
+  duplicateAsset(asset: Asset): void {
+    const duplicatedAsset: Asset = {
+      ...asset,
+      id: 0,                     // Set ID to 0 or omit it so the server can assign a new ID
+      name: `${asset.name} (Kopia)`,
+      date: new Date()
+    };
+
+    this.assetService.addAsset(duplicatedAsset).subscribe(
+      (addedAsset) => {
+        this.assets.push(addedAsset); // Add the returned asset with ID to the list
+        console.log('Asset duplicated:', addedAsset);
+      },
+      (error) => {
+        console.error('Error duplicating asset:', error);
+      }
+    );
+  }
+
+
 
   editAsset(asset: Asset) {
     this.selectedAsset = asset;

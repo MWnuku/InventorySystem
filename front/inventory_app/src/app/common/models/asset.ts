@@ -10,15 +10,14 @@ import {TypeEnum} from '../enumes/typeEnum';
 
 export interface Asset {
   id: number;
-  person: Person;
-  symbol: string;
-  inventoryNumber: number;
-  name: string;
-  value: number;
-  date: Date;
+  person?: Person;
+  inventoryNumber?: number;
+  name?: string;
+  value?: number;
+  date?: Date;
   adnotations?: string;
-  status: AssetStatus;
-  room: Room;
-  inventoryField: InventoryField;
+  status?: AssetStatus;
+  room?: Room;
+  inventoryField?: InventoryField;
   type?: TypeEnum;
 }

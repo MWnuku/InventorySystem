@@ -6,12 +6,6 @@
   <mat-card-content class="table-container">
     <!-- Filter inputs -->
     <div class="filter">
-      <!-- Symbol Filter -->
-      <mat-form-field appearance="fill">
-        <mat-label>Wyszukaj symbol</mat-label>
-        <input matInput [(ngModel)]="filterSymbol" placeholder="Symbol...">
-      </mat-form-field>
-
       <!-- Name Filter -->
       <mat-form-field appearance="fill">
         <mat-label>Wyszukaj nazwę</mat-label>
@@ -31,17 +25,95 @@
       </mat-form-field>
     </div>
 
+    <!-- Add Button -->
+    <div class="add-button">
+      <button mat-raised-button color="primary" (click)="addAsset()">Dodaj nowy</button>
+    </div>
+
     <!-- Assets Table -->
     <div class="table-wrapper">
       <table mat-table [dataSource]="filteredAssets" class="mat-elevation-z8">
-        <!-- Define table columns as needed -->
-        <!-- Example column for Symbol -->
-        <ng-container matColumnDef="symbol">
-          <th mat-header-cell *matHeaderCellDef> Symbol </th>
-          <td mat-cell *matCellDef="let asset">{{ asset.symbol }}</td>
+
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef> ID </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.id }} </td>
         </ng-container>
 
-        <!-- Define other columns here -->
+        <!-- Inventory Field Column -->
+        <ng-container matColumnDef="inventoryField">
+          <th mat-header-cell *matHeaderCellDef> Pole inwentaryzacyjne </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.inventoryField?.name }} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Nazwa </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.name }} </td>
+        </ng-container>
+
+        <!-- Inventory Number Column -->
+        <ng-container matColumnDef="inventoryNumber">
+          <th mat-header-cell *matHeaderCellDef> Numer inwentaryzacyjny </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.inventoryNumber }} </td>
+        </ng-container>
+
+        <!-- Person Column -->
+        <ng-container matColumnDef="person">
+          <th mat-header-cell *matHeaderCellDef> Osoba </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.person?.name }} </td>
+        </ng-container>
+
+        <!-- Value Column -->
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef> Wartość </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.value | currency }} </td>
+        </ng-container>
+
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef> Data </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.date | date:'shortDate' }} </td>
+        </ng-container>
+
+        <!-- Room Column -->
+        <ng-container matColumnDef="room">
+          <th mat-header-cell *matHeaderCellDef> Pokój </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.room?.symbol }} </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Status </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.status }} </td>
+        </ng-container>
+
+        <!-- Type Column -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef> Typ </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.type }} </td>
+        </ng-container>
+
+        <!-- Adnotations Column -->
+        <ng-container matColumnDef="adnotations">
+          <th mat-header-cell *matHeaderCellDef> Adnotacje </th>
+          <td mat-cell *matCellDef="let asset"> {{ asset.adnotations }} </td>
+        </ng-container>
+
+        <!-- Action Column (for edit button) -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Akcje </th>
+          <td mat-cell *matCellDef="let asset">
+            <button mat-button (click)="editAsset(asset)">Edytuj</button>
+            <button mat-button (click)="deleteAsset(asset)">Usuń</button>
+            <button mat-button (click)="duplicateAsset(asset)">Duplikuj</button>
+          </td>
+        </ng-container>
+
+        <!-- Header and Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
       </table>
     </div>
   </mat-card-content>

@@ -88,13 +88,4 @@ public class AssetService {
 			throw new IllegalArgumentException("Asset does not exist");
 		}
 	}
-
-	public Asset findAssetBySymbol(String symbol){
-		Optional<Asset> asset = assetRespository.findBySymbol(symbol);
-		if(asset.isPresent()){
-			return asset.get();
-		} else {
-			throw new IllegalArgumentException("Asset does not exist");
-		}
-	}
 }
