@@ -14,7 +14,7 @@ export interface EditAsset {
   value: number;
   adnotations?: string;
   status: AssetStatus;
-  rooms: Room[];
+  room: Room;
   inventoryField: InventoryField;
   type?: TypeEnum;
 }

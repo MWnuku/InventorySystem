@@ -30,20 +30,8 @@ public class AssetService {
 			throw new IllegalArgumentException("Asset with this id does not exist");
 		}
 		Asset asset1 = assetRespository.findById(asset.getId()).get();
-		if(asset.getAcquisitions() != null){
-			asset1.setAcquisitions(asset.getAcquisitions());
-		}
-		if(asset.getInventoryNumber() != null){
-			asset1.setInventoryNumber(asset.getInventoryNumber());
-		}
-		if(asset.getChanges() != null){
-			asset1.setChanges(asset.getChanges());
-		}
 		if(asset.getAdnotations() != null){
 			asset1.setAdnotations(asset.getAdnotations());
-		}
-		if(asset.getDeletions() != null){
-			asset1.setDeletions(asset.getDeletions());
 		}
 		if(asset.getName() != null){
 			asset1.setName(asset.getName());
@@ -51,11 +39,14 @@ public class AssetService {
 		if(asset.getStatus() != null){
 			asset1.setStatus(asset.getStatus());
 		}
-		if(asset.getSymbol() != null){
-			asset1.setSymbol(asset.getSymbol());
+		if(asset.getDate() != null){
+			asset1.setDate(asset.getDate());
 		}
-		if(asset.getRooms() != null){
-			asset1.setRooms(asset.getRooms());
+		if(asset.getValue() != null){
+			asset1.setValue(asset.getValue());
+		}
+		if(asset.getRoom() != null){
+			asset1.setRoom(asset.getRoom());
 		}
 		return assetRespository.save(asset1);
 	}
