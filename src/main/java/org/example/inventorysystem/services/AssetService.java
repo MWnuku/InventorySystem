@@ -2,6 +2,7 @@ package org.example.inventorysystem.services;
 
 import org.apache.coyote.Response;
 import org.example.inventorysystem.models.Asset;
+import org.example.inventorysystem.models.Room;
 import org.example.inventorysystem.respositories.AssetRespository;
 import org.springframework.stereotype.Service;
 
@@ -11,15 +12,22 @@ import java.util.Optional;
 @Service
 public class AssetService {
 	private final AssetRespository assetRespository;
+	private final RoomService roomService;
 
-	public AssetService(AssetRespository assetRespository) {
+	public AssetService(AssetRespository assetRespository, RoomService roomService) {
 		this.assetRespository = assetRespository;
+		this.roomService = roomService;
 	}
 
 	public Asset addAsset(Asset asset) {
 		if(assetRespository.existsByInventoryNumber(asset.getInventoryNumber())){
 			throw new IllegalArgumentException("Inventory number already exists");
 		}
+		if (asset.getRoom() != null && asset.getRoom().getId() != null) {
+			Room roomReference = roomService.getRoomById(asset.getRoom().getId());
+			asset.setRoom(roomReference);
+		}
+
 		return assetRespository.save(asset);
 	}
 

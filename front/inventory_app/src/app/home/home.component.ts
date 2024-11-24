@@ -1,11 +1,38 @@
-import { Component } from '@angular/core';
-import { MaterialModule } from '../shared/modules/material/material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { AssetEditComponent } from '../asset-edit/asset-edit.component';
-import { Asset } from '../common/models/asset';
-import { AssetsService } from '../common/services/assets.service';
+import {Component} from '@angular/core';
+import {
+  MaterialModule
+} from '../shared/modules/material/material.module';
+import {
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
+import {
+  RouterModule
+} from '@angular/router';
+import {
+  CommonModule
+} from '@angular/common';
+import {
+  AssetEditComponent
+} from '../asset-edit/asset-edit.component';
+import {
+  Asset
+} from '../common/models/asset';
+import {
+  AssetsService
+} from '../common/services/assets.service';
+import {
+  Person
+} from '../common/models/person';
+import {
+  AssetStatus
+} from '../common/models/asset_status';
+import {
+  TypeEnum
+} from '../common/enumes/typeEnum';
+import {
+  InventoryField
+} from '../common/models/inventory-field';
 
 @Component({
   selector: 'app-home',
@@ -26,53 +53,104 @@ export class HomeComponent {
   filterInventoryNumber: string = '';
   filterRoom: string = '';
   selectedAsset: Asset | null = null;
+  isEditing: boolean = false;
+  persons: Person[] = []; // List of persons fetched from the backend
+  inventoryFields: InventoryField[] = [];
 
   constructor(private assetService: AssetsService) {}
 
   ngOnInit(): void {
     this.getAssets();
+    this.getPersons(); // Fetch persons for dropdown
+    this.getInventoryFields();
   }
 
-  getAssets(): void {
-    this.assetService.getAssets().subscribe((assets: Asset[]) => {
-      this.assets = assets;
-      console.log('asety', this.assets);
+  getInventoryFields(): void {
+    console.log('Inventory Fields for Dropdown:', this.inventoryFields);
+
+    this.assetService.getInventoryFields().subscribe(
+      (fields: InventoryField[]) => {
+        this.inventoryFields = fields; // Store the fetched fields
+        console.log('Fetched Inventory Fields:', this.inventoryFields); // Debug log
+      },
+      (error) => console.error('Error fetching inventory fields:', error)
+    );
+  }
+
+
+
+  getPersons(): void {
+    this.assetService.getPersons().subscribe((persons: Person[]) => {
+      this.persons = persons;
     });
   }
 
   get filteredAssets() {
-    return this.assets.filter(asset =>
-      (asset.name && asset.name.toLowerCase().includes(this.filterName.toLowerCase())) &&
-      (asset.inventoryNumber && asset.inventoryNumber.toString().includes(this.filterInventoryNumber.toLowerCase())) &&
-      (asset.room && asset.room.symbol.toLowerCase().includes(this.filterRoom.toLowerCase()))
+    return this.assets.filter(asset => {
+      const nameMatch = asset.name?.toLowerCase().includes(this.filterName.toLowerCase());
+      const inventoryMatch = asset.inventoryNumber?.toString().includes(this.filterInventoryNumber.toLowerCase());
+      const roomMatch = asset.room?.symbol?.toLowerCase().includes(this.filterRoom.toLowerCase());
+      return nameMatch || inventoryMatch || roomMatch;
+    });
+  }
+
+  getAssets(): void {
+    this.assetService.getAssets().subscribe(
+      (assets: Asset[]) => {
+        this.assets = assets; // Populate the assets array
+        console.log('Assets fetched:', this.assets); // Debug log
+      },
+      (error) => console.error('Error fetching assets:', error)
     );
   }
+
 
   addAsset(): void {
     const newAsset: Asset = {
-      id: this.assets.length + 1, // Temporary ID, adjust as needed
-      person: undefined,          // Use `undefined` instead of `null`
-      inventoryNumber: undefined,
+      id: 0,
       name: '',
+      inventoryNumber: undefined, // Use undefined for optional number fields
       value: 0,
       date: new Date(),
-      status: undefined,
-      room: undefined,
-      inventoryField: undefined,
-      type: undefined
-    };
-    this.assetService.addAsset(newAsset).subscribe(
-      (addedAsset) => {
-        this.assets.push(addedAsset); // Add the returned asset with ID to the list
-        this.selectedAsset = addedAsset;
-        console.log('Asset added:', addedAsset);
+      adnotations: '',
+      status: AssetStatus.Active, // Use enum for status
+      room: {
+        id: 0,
+        asset: {} as Asset, // Provide default or placeholder asset
+        building: '',
+        symbol: '',
+        dateFrom: new Date(),
+        dateTo: null, // Allow null for dateTo
       },
-      (error) => {
-        console.error('Error adding asset:', error);
-      }
-    );
+      person: { id: null }, // Use undefined for optional fields
+      inventoryField: { id: null },
+      type: TypeEnum.Computer, // Allow null for type
+    };
+
+    this.editAsset(newAsset); // Reuse the edit logic
   }
 
+  editAsset(asset: Asset): void {
+    this.selectedAsset = asset;
+    this.isEditing = true;
+  }
+
+  onEditClose(): void {
+    this.isEditing = false;
+    this.selectedAsset = null;
+    this.getAssets();
+  }
+
+  duplicateAsset(asset: Asset): void {
+    const duplicatedAsset: Asset = {
+      ...asset,
+      id: 0, // Backend should assign a new ID
+      name: `${asset.name} (Copy)`,
+      date: new Date(),
+    };
+    this.editAsset(duplicatedAsset); // Reuse the edit logic to open the form
+    this.isEditing = true;
+  }
 
   deleteAsset(id: number): void {
     if (confirm('Are you sure you want to delete this asset?')) {
@@ -81,32 +159,5 @@ export class HomeComponent {
         this.assets = this.assets.filter(asset => asset.id !== id); // Update the UI after deletion
       });
     }
-  }
-
-
-  // Method to duplicate an asset
-  duplicateAsset(asset: Asset): void {
-    const duplicatedAsset: Asset = {
-      ...asset,
-      id: 0,                     // Set ID to 0 or omit it so the server can assign a new ID
-      name: `${asset.name} (Kopia)`,
-      date: new Date()
-    };
-
-    this.assetService.addAsset(duplicatedAsset).subscribe(
-      (addedAsset) => {
-        this.assets.push(addedAsset); // Add the returned asset with ID to the list
-        console.log('Asset duplicated:', addedAsset);
-      },
-      (error) => {
-        console.error('Error duplicating asset:', error);
-      }
-    );
-  }
-
-
-
-  editAsset(asset: Asset) {
-    this.selectedAsset = asset;
   }
 }

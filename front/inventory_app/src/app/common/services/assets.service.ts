@@ -11,6 +11,11 @@ import {
   EditAsset
 } from '../models/asset-edit';
 import {Asset} from '../models/asset';
+import {Person} from '../models/person';
+import {
+  InventoryField
+} from '../models/inventory-field';
+import {Room} from '../models/room';
 @Injectable({
   providedIn: 'root'
 })
@@ -32,19 +37,40 @@ export class AssetsService {
     return this.http.get<Asset[]>(`${this.url}/asset/`, { headers: this.getHeaders() });
   }
 
-  // Update an existing asset
-  updateAsset(asset: EditAsset): Observable<EditAsset> {
-    return this.http.post<EditAsset>(`${this.url}/update`, asset, { headers: this.getHeaders() });
-  }
-
-  // Add a new asset
   addAsset(asset: Asset): Observable<Asset> {
     return this.http.post<Asset>(`${this.url}/asset/`, asset, { headers: this.getHeaders() }).pipe(
-      tap(newAsset => console.log('Asset added:', newAsset))
+      tap((newAsset) => console.log('Asset added:', newAsset))
+    );
+  }
+
+  getInventoryFields(): Observable<InventoryField[]> {
+    return this.http.get<InventoryField[]>(`${this.url}/field/`, { headers: this.getHeaders() });
+  }
+
+
+  updateAsset(asset: Asset): Observable<Asset> {
+    return this.http.post<Asset>(`${this.url}/asset/update/`, asset, { headers: this.getHeaders() }).pipe(
+      tap((updatedAsset) => console.log('Asset updated:', updatedAsset))
     );
   }
 
   deleteAsset(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.url}/asset/${id}`, { headers: this.getHeaders() });
+    return this.http.delete<void>(`${this.url}/asset/${id}`, { headers: this.getHeaders() }).pipe(
+      tap(() => console.log(`Asset with ID ${id} deleted`))
+    );
   }
+
+  getPersons(): Observable<Person[]> {
+    return this.http.get<Person[]>(`${this.url}/person/`, { headers: this.getHeaders() }).pipe(
+      tap((persons) => console.log('Fetched persons:', persons))
+    );
+  }
+
+  getRooms(): Observable<Room[]> {
+    return this.http.get<Room[]>(`${this.url}/room/`, { headers: this.getHeaders() }).pipe(
+      tap((rooms) => console.log('Fetched persons:', rooms))
+    );
+  }
+
+
 }

@@ -1,10 +1,11 @@
 import {Asset} from './asset';
 
 export interface Room {
-  id: Number,
-  asset: Asset,
-  building: String,
-  symbol: String,
-  dateFrom: Date,
-  dateTo: Date,
+  id?: number;
+  asset?: Asset;
+  building: string;
+  symbol: string;
+  dateFrom: Date;
+  dateTo?: Date | null;
 }
+

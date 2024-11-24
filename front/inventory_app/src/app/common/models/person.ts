@@ -4,12 +4,12 @@ import {
 import {Role} from './role';
 
 export interface Person {
-  id: Number,
-  firstName: String,
-  lastName: String,
-  email: String,
-  password: String,
-  unit: String;
-  inventoryFields: Array<InventoryField>,
-  role: Role,
+  id: number | null;
+  firstName?: string; // Optional
+  lastName?: string; // Optional
+  email?: string; // Optional
+  password?: string; // Optional
+  unit?: string; // Optional
+  inventoryFields?: InventoryField[]; // Optional
+  role?: Role; // Optional
 }

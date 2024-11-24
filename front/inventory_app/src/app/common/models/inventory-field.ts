@@ -2,8 +2,8 @@ import {Person} from './person';
 import {Asset} from './asset';
 
 export interface InventoryField {
-  id: Number,
-  number: String,
-  person: Person,
-  assets: Array<Asset>,
+  id: number | null;
+  number?: string; // Optional
+  person?: Person; // Optional
+  assets?: Asset[]; // Optional
 }

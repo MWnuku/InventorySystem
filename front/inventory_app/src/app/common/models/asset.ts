@@ -9,9 +9,9 @@ import {
 import {TypeEnum} from '../enumes/typeEnum';
 
 export interface Asset {
-  id: number;
+  id?: number | null;
   person?: Person;
-  inventoryNumber?: number;
+  inventoryNumber?: number | null; // Allow null values
   name?: string;
   value?: number;
   date?: Date;
@@ -21,3 +21,4 @@ export interface Asset {
   inventoryField?: InventoryField;
   type?: TypeEnum;
 }
+

@@ -81,6 +81,7 @@ export class InventoryFieldComponent {
   }
 
   viewAssets(inventoryFieldId: number): void {
+    sessionStorage.setItem('selectedInventoryFieldId', inventoryFieldId.toString());
     this.router.navigate(['/assets']);
   }
 }

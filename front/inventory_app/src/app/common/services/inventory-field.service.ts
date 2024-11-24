@@ -27,4 +27,9 @@ export class InventoryFieldService {
     return this.http.get<any[]>(this.baseUrl, {headers: this.getHeaders()});
   }
 
+  getCurrentInventoryField(): number | null{
+    const selected =  sessionStorage.getItem('selectedInventoryFieldId');
+    return selected ? +selected : null
+  }
+
 }

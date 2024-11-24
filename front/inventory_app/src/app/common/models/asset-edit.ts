@@ -5,16 +5,21 @@ import { InventoryField } from './inventory-field';
 import { TypeEnum } from '../enumes/typeEnum';
 
 export interface EditAsset {
-  readonly id: number;
-  person: Person;
+  id: number;
+  date: Date;
+  value: number;
+  room: { building: string; symbol: string; dateFrom: Date; dateTo?: Date | null };
+  person: { id: number };
   symbol: string;
   inventoryNumber: number;
   name: string;
-  date: Date;
-  value: number;
-  adnotations?: string;
-  status: AssetStatus;
-  room: Room;
-  inventoryField: InventoryField;
-  type?: TypeEnum;
+  acquisitions: any[];
+  changes: any[];
+  deletions: any[];
+  adnotations: string;
+  status: string;
+  rooms: { building: string; symbol: string; dateFrom: Date; dateTo?: Date | null }[];
+  inventoryField: { id: number };
+  type?: string | null;
 }
+

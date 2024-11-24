@@ -49,5 +49,9 @@ export class AuthService {
     this.loggedInStatus.next(false); // Update login status
     this.router.navigate(['/login']);
   }
+  getLoggedInUserId(): number | null {
+    const userId = sessionStorage.getItem('userId');
+    return userId ? +userId : null; // Return userId as a number or null if not found
+  }
 
 }

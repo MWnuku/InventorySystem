@@ -3,6 +3,7 @@ package org.example.inventorysystem.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 
@@ -24,5 +25,6 @@ public class Room {
 	private String building;
 	private String symbol;
 	private LocalDate dateFrom;
+	@Nullable
 	private LocalDate dateTo;
 }

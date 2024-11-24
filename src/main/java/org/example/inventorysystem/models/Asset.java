@@ -35,7 +35,7 @@ public class Asset {
 	private String adnotations;
 	private AssetStatus status;
 
-	@OneToOne(mappedBy = "asset", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@OneToOne(mappedBy = "asset")
 	@JsonManagedReference
 	private Room room;
 
