@@ -28,7 +28,8 @@ export class AssetsService {
   private getHeaders(): HttpHeaders {
     const token = sessionStorage.getItem('access_token');
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`,
+      'content-type': 'application/json'
     });
   }
 
@@ -49,7 +50,7 @@ export class AssetsService {
 
 
   updateAsset(asset: Asset): Observable<Asset> {
-    return this.http.post<Asset>(`${this.url}/asset/update/`, asset, { headers: this.getHeaders() }).pipe(
+    return this.http.post<Asset>(`${this.url}/asset/update`, asset, { headers: this.getHeaders() }).pipe(
       tap((updatedAsset) => console.log('Asset updated:', updatedAsset))
     );
   }
