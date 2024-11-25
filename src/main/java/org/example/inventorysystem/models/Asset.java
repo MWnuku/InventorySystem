@@ -22,8 +22,11 @@ public class Asset {
 	@Column(name = "asset_id")
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonIdentityReference(alwaysAsId = true)
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//	@JsonIgnoreProperties({"inventoryFieldList", "password", "role", "enabled", "username", "authorities",
+//			"accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
 	private Person person;
 
 	private Integer inventoryNumber;

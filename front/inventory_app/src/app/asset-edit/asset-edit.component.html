@@ -30,15 +30,15 @@
         <textarea matInput formControlName="adnotations"></textarea>
       </mat-form-field>
 
-<!--      &lt;!&ndash; Person &ndash;&gt;-->
-<!--      <mat-form-field appearance="fill" class="form-field">-->
-<!--        <mat-label>Person</mat-label>-->
-<!--        <mat-select formControlName="personId">-->
-<!--          <mat-option *ngFor="let person of persons" [value]="person.id">-->
-<!--            {{ person.firstName }} {{ person.lastName }}-->
-<!--          </mat-option>-->
-<!--        </mat-select>-->
-<!--      </mat-form-field>-->
+      <!-- Person -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Person</mat-label>
+        <mat-select formControlName="personId">
+          <mat-option *ngFor="let person of persons" [value]="person.id">
+            {{ person.firstName }} {{ person.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
       <!-- Status -->
       <mat-form-field appearance="fill">

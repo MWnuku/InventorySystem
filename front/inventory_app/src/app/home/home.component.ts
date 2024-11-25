@@ -43,7 +43,7 @@ import {
 })
 export class HomeComponent {
   displayedColumns: string[] = [
-    'id', 'inventoryField', 'name', 'inventoryNumber',
+    'id', 'inventoryField', 'name', 'inventoryNumber', 'person',
     'value', 'date', 'status', 'room', 'type', 'adnotations', 'action'
   ];
 
@@ -87,12 +87,23 @@ export class HomeComponent {
 
   get filteredAssets() {
     return this.assets.filter(asset => {
-      const nameMatch = asset.name?.toLowerCase().includes(this.filterName.toLowerCase());
-      const inventoryMatch = asset.inventoryNumber?.toString().includes(this.filterInventoryNumber.toLowerCase());
-      const roomMatch = asset.room?.symbol?.toLowerCase().includes(this.filterRoom.toLowerCase());
-      return nameMatch || inventoryMatch || roomMatch;
+      const nameMatch = this.filterName
+        ? asset.name?.toLowerCase().includes(this.filterName.toLowerCase())
+        : true;
+
+      const inventoryMatch = this.filterInventoryNumber
+        ? asset.inventoryNumber?.toString().includes(this.filterInventoryNumber.toLowerCase())
+        : true;
+
+      const roomMatch = this.filterRoom
+        ? asset.room?.symbol?.toLowerCase().includes(this.filterRoom.toLowerCase())
+        : true;
+
+      // Combine all filters conjunctively (AND logic)
+      return nameMatch && inventoryMatch && roomMatch;
     });
   }
+
 
   getAssets(): void {
     this.assetService.getAssets().subscribe(

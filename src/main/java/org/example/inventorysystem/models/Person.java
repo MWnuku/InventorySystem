@@ -18,6 +18,10 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class,
+		property = "id"
+)
 public class Person implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +38,7 @@ public class Person implements UserDetails {
 	@JsonIdentityReference(alwaysAsId = true)
 	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 	private List<InventoryField> inventoryFieldList;
+
 	@Enumerated(EnumType.STRING)
 	private Role role = Role.User;
 

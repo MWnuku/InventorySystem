@@ -60,7 +60,7 @@ import {
 export class AssetEditComponent implements OnInit {
   @Input() asset: any;
   @Output() close = new EventEmitter<void>();
-  // persons: Person[] = []; // List of persons fetched from the backendtypeOptions = Object.values(TypeEnum);
+  persons: Person[] = []; // List of persons fetched from the backendtypeOptions = Object.values(TypeEnum);
   typeOptions = Object.values(TypeEnum);
   statusOptions = Object.values(AssetStatus);
   inventoryFields: InventoryField[] =[];
@@ -80,7 +80,7 @@ export class AssetEditComponent implements OnInit {
       name: [null, Validators.required],
       acquisitionDate: [new Date().toISOString().split('T')[0], Validators.required],
       inventoryFieldId: [this.currentInventoryField, Validators.required],
-      // personId: [this.currentUser, Validators.required],
+      personId: [this.currentUser, Validators.required],
       roomId: [null, Validators.required],
       adnotations: [null],
       value: [null],
@@ -113,14 +113,14 @@ export class AssetEditComponent implements OnInit {
         value: this.asset.value,
         status: this.asset.status,
         type: this.asset.type,
-        // personId: this.asset.person?.id,
+        personId: this.asset.person?.id,
         roomId: this.asset.room?.id,
         inventoryFieldId: this.asset.inventoryField?.id,
       });
     }
 
     this.getInventoryFields();
-    // this.getPersons();
+    this.getPersons();
     this.getRooms();
     this.currentUser = this.authService.getLoggedInUserId();
     this.currentInventoryField = this.inventoryService.getCurrentInventoryField();
@@ -128,11 +128,11 @@ export class AssetEditComponent implements OnInit {
 
 
 
-  // getPersons(): void {
-  //   this.assetService.getPersons().subscribe((persons: Person[]) => {
-  //     this.persons = persons;
-  //   });
-  // }
+  getPersons(): void {
+    this.assetService.getPersons().subscribe((persons: Person[]) => {
+      this.persons = persons;
+    });
+  }
 
   getInventoryFields(): void {
     this.assetService.getInventoryFields().subscribe(
@@ -167,9 +167,7 @@ export class AssetEditComponent implements OnInit {
         },
       };
 
-      // Determine whether to call add or update endpoint
       if (this.asset?.id) {
-        // Update asset
         this.assetService.updateAsset(assetPayload).subscribe(
           (updatedAsset) => {
             console.log('Asset updated successfully:', updatedAsset);

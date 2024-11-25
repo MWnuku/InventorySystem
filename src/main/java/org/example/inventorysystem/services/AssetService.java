@@ -13,10 +13,12 @@ import java.util.Optional;
 public class AssetService {
 	private final AssetRespository assetRespository;
 	private final RoomService roomService;
+	private final InventoryFieldService inventoryFieldService;
 
-	public AssetService(AssetRespository assetRespository, RoomService roomService) {
+	public AssetService(AssetRespository assetRespository, RoomService roomService, InventoryFieldService inventoryFieldService) {
 		this.assetRespository = assetRespository;
 		this.roomService = roomService;
+		this.inventoryFieldService = inventoryFieldService;
 	}
 
 	public Asset addAsset(Asset asset) {
@@ -27,7 +29,7 @@ public class AssetService {
 			Room roomReference = roomService.getRoomById(asset.getRoom().getId());
 			asset.setRoom(roomReference);
 		}
-
+		inventoryFieldService.addAssetToInventoryField(asset.getInventoryField().getId(), asset);
 		return assetRespository.save(asset);
 	}
 

@@ -1,5 +1,6 @@
 package org.example.inventorysystem.services;
 
+import org.example.inventorysystem.models.Asset;
 import org.example.inventorysystem.models.InventoryField;
 import org.example.inventorysystem.respositories.InventoryFieldRepository;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,12 @@ public class InventoryFieldService {
 		} else {
 			return inventoryFields;
 		}
+	}
+
+	public void addAssetToInventoryField(long id, Asset asset) {
+		InventoryField inventoryField1 = getInventoryFieldById(id);
+		inventoryField1.getAssets().add(asset);
+		inventoryFieldRepository.save(inventoryField1);
 	}
 
 	public InventoryField getInventoryFieldById(long id) {
