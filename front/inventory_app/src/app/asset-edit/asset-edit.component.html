@@ -1,3 +1,9 @@
+<mat-toolbar color="primary" class="toolbar">
+  <button mat-icon-button (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <span>Asset Management</span>
+</mat-toolbar>
 <mat-card>
   <mat-card-header>
     <mat-card-title>{{ asset?.id ? 'Edit Asset' : 'Add Asset' }}</mat-card-title>

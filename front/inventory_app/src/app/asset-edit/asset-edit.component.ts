@@ -12,6 +12,8 @@ import {
   ReactiveFormsModule, FormsModule
 } from '@angular/forms';
 import {AssetsService} from '../common/services/assets.service';
+import { Location } from '@angular/common';
+
 import {
   MaterialModule
 } from '../shared/modules/material/material.module';
@@ -74,7 +76,7 @@ export class AssetEditComponent implements OnInit {
 
   assetForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private assetService: AssetsService, private authService: AuthService, private  inventoryService: InventoryFieldService) {
+  constructor(private fb: FormBuilder, private assetService: AssetsService, private authService: AuthService, private  inventoryService: InventoryFieldService, private location: Location) {
     this.assetForm = this.fb.group({
       inventoryNumber: [null, Validators.required],
       name: [null, Validators.required],
@@ -188,6 +190,9 @@ export class AssetEditComponent implements OnInit {
     } else {
       console.error('Form is invalid:', this.assetForm);
     }
+  }
+  goBack(): void {
+    this.location.back(); // Navigates back to the previous page
   }
 
 }

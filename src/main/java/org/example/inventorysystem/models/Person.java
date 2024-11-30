@@ -2,6 +2,7 @@ package org.example.inventorysystem.models;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
@@ -35,8 +36,7 @@ public class Person implements UserDetails {
 	private String unit;
 
 	@OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-	@JsonIdentityReference(alwaysAsId = true)
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@JsonManagedReference
 	private List<InventoryField> inventoryFieldList;
 
 	@Enumerated(EnumType.STRING)

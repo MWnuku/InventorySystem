@@ -21,9 +21,10 @@ public class InventoryField {
 	private Long id;
 	private String number;
 
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "person_id")
-	@JsonIgnore
+	@JsonBackReference
 	private Person person;
 
 	@OneToMany(mappedBy = "inventoryField", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)

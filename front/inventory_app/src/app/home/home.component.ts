@@ -10,7 +10,7 @@ import {
   RouterModule
 } from '@angular/router';
 import {
-  CommonModule
+  CommonModule, Location
 } from '@angular/common';
 import {
   AssetEditComponent
@@ -57,7 +57,7 @@ export class HomeComponent {
   // persons: Person[] = []; // List of persons fetched from the backend
   inventoryFields: InventoryField[] = [];
 
-  constructor(private assetService: AssetsService) {}
+  constructor(private assetService: AssetsService, private location: Location) {}
 
   ngOnInit(): void {
     this.getAssets();
@@ -170,5 +170,8 @@ export class HomeComponent {
         this.assets = this.assets.filter(asset => asset.id !== id); // Update the UI after deletion
       });
     }
+  }
+  goBack(): void {
+    this.location.back(); // Navigates back to the previous page
   }
 }

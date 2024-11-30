@@ -1,18 +1,18 @@
-/* Styl dla kontenera formularza */
+
 mat-card {
   width: 100%;
-  max-width: 600px;  /* Maksymalna szerokość formularza */
-  margin: 0 auto;    /* Wyśrodkowanie formularza */
+  max-width: 600px;
+  margin: 0 auto;
   padding: 16px;
 }
 
-/* Styl dla każdego pola formularza */
+
 .mat-form-field {
   width: 100%;
-  margin-bottom: 16px; /* Odstęp pomiędzy polami */
+  margin-bottom: 16px;
 }
 
-/* Styl dla przycisku zapisz */
+
 .button-container {
   display: flex;
   justify-content: center;
@@ -21,5 +21,16 @@ mat-card {
 
 button {
   width: 100%;
-  max-width: 200px;  /* Maksymalna szerokość przycisku */
+  max-width: 200px;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 64px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+mat-icon {
+  font-size: 24px;
 }
