@@ -76,4 +76,14 @@ public class AssetController {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 		}
 	}
+
+	@GetMapping("/field/{id}")
+	public ResponseEntity<?> getAssetByField(@PathVariable long id) {
+		try {
+			List<Asset> assets = assetService.findAssetsByInventoryField(id);
+			return new ResponseEntity<>(assets, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+		}
+	}
 }

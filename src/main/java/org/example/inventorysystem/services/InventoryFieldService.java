@@ -3,17 +3,21 @@ package org.example.inventorysystem.services;
 import org.example.inventorysystem.models.Asset;
 import org.example.inventorysystem.models.InventoryField;
 import org.example.inventorysystem.respositories.InventoryFieldRepository;
+import org.example.inventorysystem.respositories.PersonRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class InventoryFieldService {
 	private final InventoryFieldRepository inventoryFieldRepository;
+	private final PersonRepository personRepository;
 
-	public InventoryFieldService(InventoryFieldRepository inventoryFieldRepository) {
+	public InventoryFieldService(InventoryFieldRepository inventoryFieldRepository, PersonRepository personRepository) {
 		this.inventoryFieldRepository = inventoryFieldRepository;
+		this.personRepository = personRepository;
 	}
 
 	public InventoryField addInventoryField(InventoryField inventoryField) {
@@ -73,6 +77,14 @@ public class InventoryFieldService {
 			inventoryFieldRepository.deleteById(id);
 		} else {
 			throw new RuntimeException("No inventory field found with id " + id);
+		}
+	}
+
+	public ArrayList<InventoryField> getInventoryFieldsByPersonId(long personId) {
+		if(!personRepository.existsById(personId)) {
+			throw new RuntimeException("No person found with id " + personId);
+		} else {
+			return inventoryFieldRepository.getInventoryFieldsByPersonId(personId);
 		}
 	}
 }

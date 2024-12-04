@@ -9,23 +9,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DataLoader implements CommandLineRunner {
-	private final AcquisitionRepository acquisitionRepository;
 	private final AssetRespository assetRespository;
-	private final ChangeRepository changeRepository;
-	private final DeletitionRepository deletionRepository;
 	private final InventoryFieldRepository inventoryFieldRepository;
 	private final PersonRepository personRepository;
 	private final RoomRepository roomRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	public DataLoader(AcquisitionRepository acquisitionRepository, AssetRespository assetRespository, ChangeRepository changeRepository, DeletitionRepository deletionRepository, InventoryFieldRepository inventoryFieldRepository, PersonRepository personRepository, RoomRepository roomRepository, PasswordEncoder passwordEncoder) {
-		this.acquisitionRepository = acquisitionRepository;
+	public DataLoader(AssetRespository assetRespository, InventoryFieldRepository inventoryFieldRepository, PersonRepository personRepository, RoomRepository roomRepository, PasswordEncoder passwordEncoder) {
 		this.assetRespository = assetRespository;
-		this.changeRepository = changeRepository;
-		this.deletionRepository = deletionRepository;
 		this.inventoryFieldRepository = inventoryFieldRepository;
 		this.personRepository = personRepository;
 		this.roomRepository = roomRepository;
@@ -35,6 +30,22 @@ public class DataLoader implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
+		InventoryField inventoryField2 = new InventoryField();
+		inventoryField2.setNumber("177-02");
+		inventoryFieldRepository.save(inventoryField2);
+		Person gAdmin = new Person();
+		gAdmin.setFirstName("Grzegorz");
+		gAdmin.setLastName("Admin");
+		gAdmin.setEmail("g.admin@mail.com");
+		gAdmin.setPassword(passwordEncoder.encode("admin123"));
+		gAdmin.setRole(Role.Admin);
+		ArrayList<InventoryField> fields = new ArrayList<>();
+		fields.add(inventoryField2);
+		gAdmin.setInventoryFieldList(fields);
+		personRepository.save(gAdmin);
+		inventoryField2.setPerson(gAdmin);
+		inventoryFieldRepository.save(inventoryField2);
+
 		InventoryField inventoryField = new InventoryField();
 		inventoryField.setNumber("A1234");
 		inventoryFieldRepository.save(inventoryField);
@@ -66,39 +77,21 @@ public class DataLoader implements CommandLineRunner {
 		asset.setRoom(room);
 		asset.setType(Type.Intelectual);
 		assetRespository.save(asset);
-		room.setAsset(asset);
+		List<Asset> assets = new ArrayList<>();
+		assets.add(asset);
+		room.setAssets(assets);
 		roomRepository.save(room);
 
-		ArrayList<Asset> assets = new ArrayList<>();
+		ArrayList<Asset> assets2 = new ArrayList<>();
 		assets.add(asset);
 		inventoryField.setPerson(person);
-		inventoryField.setAssets(assets);
+		inventoryField.setAssets(assets2);
 		inventoryFieldRepository.save(inventoryField);
 		ArrayList<InventoryField> inventoryFields = new ArrayList<>();
 		inventoryFields.add(inventoryField);
 		person.setInventoryFieldList(inventoryFields);
 		personRepository.saveAndFlush(person);
 
-		Change change = new Change();
-		change.setAsset(asset);
-		change.setDescription("Description");
-		change.setDate(date);
-		change.setValue(123);
-		changeRepository.save(change);
-
-		Deletion deletion = new Deletion();
-		deletion.setAsset(asset);
-		deletion.setDescription("Description deletion");
-		deletion.setDate(date);
-		deletion.setValue(1234);
-		deletionRepository.save(deletion);
-
-		Acquisition acquisition = new Acquisition();
-		acquisition.setAsset(asset);
-		acquisition.setDescription("Description acquisition");
-		acquisition.setDate(date);
-		acquisition.setValue(123);
-		acquisitionRepository.save(acquisition);
 
 	}
 }

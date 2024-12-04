@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -73,6 +74,16 @@ public class InventoryFieldController {
 			InventoryField field = inventoryFieldService.getInventoryFieldById(id);
 			return new ResponseEntity<>(field.getAssets(), HttpStatus.OK);
 		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/person/{personId}")
+	public ResponseEntity<?> getFieldByPersonId(@PathVariable long personId) {
+		try {
+			ArrayList<InventoryField> fields = inventoryFieldService.getInventoryFieldsByPersonId(personId);
+			return new ResponseEntity<>(fields, HttpStatus.OK);
+		} catch(Exception e){
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}

@@ -4,6 +4,7 @@ import org.apache.coyote.Response;
 import org.example.inventorysystem.models.Asset;
 import org.example.inventorysystem.models.Room;
 import org.example.inventorysystem.respositories.AssetRespository;
+import org.example.inventorysystem.respositories.InventoryFieldRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,22 +15,20 @@ public class AssetService {
 	private final AssetRespository assetRespository;
 	private final RoomService roomService;
 	private final InventoryFieldService inventoryFieldService;
+	private final InventoryFieldRepository inventoryFieldRepository;
 
-	public AssetService(AssetRespository assetRespository, RoomService roomService, InventoryFieldService inventoryFieldService) {
+	public AssetService(AssetRespository assetRespository, RoomService roomService, InventoryFieldService inventoryFieldService, InventoryFieldRepository inventoryFieldRepository) {
 		this.assetRespository = assetRespository;
 		this.roomService = roomService;
 		this.inventoryFieldService = inventoryFieldService;
+		this.inventoryFieldRepository = inventoryFieldRepository;
 	}
 
 	public Asset addAsset(Asset asset) {
-		if(assetRespository.existsByInventoryNumber(asset.getInventoryNumber())){
-			throw new IllegalArgumentException("Inventory number already exists");
-		}
 		if (asset.getRoom() != null && asset.getRoom().getId() != null) {
 			Room roomReference = roomService.getRoomById(asset.getRoom().getId());
 			asset.setRoom(roomReference);
 		}
-		inventoryFieldService.addAssetToInventoryField(asset.getInventoryField().getId(), asset);
 		return assetRespository.save(asset);
 	}
 
@@ -96,6 +95,14 @@ public class AssetService {
 			return asset.get();
 		} else {
 			throw new IllegalArgumentException("Asset does not exist");
+		}
+	}
+
+	public List<Asset> findAssetsByInventoryField(Long inventoryFieldId) {
+		if(!inventoryFieldRepository.existsById(inventoryFieldId)){
+			throw new IllegalArgumentException("Inventory field id does not exist");
+		} else {
+			return assetRespository.findByInventoryFieldId(inventoryFieldId);
 		}
 	}
 }

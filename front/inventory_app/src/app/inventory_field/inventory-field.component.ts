@@ -63,7 +63,7 @@ import {
 })
 export class InventoryFieldComponent {
   inventoryFields: any[] = [];
-  displayedColumns: string[] = ['id', 'number', 'person', 'action'];
+  displayedColumns: string[] = ['id', 'number', 'action'];
 
   constructor(
     private inventoryFieldService: InventoryFieldService,

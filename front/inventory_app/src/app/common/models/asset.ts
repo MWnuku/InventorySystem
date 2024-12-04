@@ -14,7 +14,7 @@ export interface Asset {
   inventoryNumber?: number | null; // Allow null values
   name?: string;
   value?: number;
-  date?: Date;
+  date?: Date | string;
   adnotations?: string;
   status?: AssetStatus;
   room?: Room;

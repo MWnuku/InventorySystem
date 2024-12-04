@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.awt.print.Book;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,10 +35,16 @@ public class Person implements UserDetails {
 	private String password;
 	private String email;
 	private String unit;
+	@OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JsonIdentityReference(alwaysAsId = true)
+	private List<Asset> assets;
 
-	@OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
 	@JsonManagedReference
+	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@JsonIdentityReference(alwaysAsId = true)
 	private List<InventoryField> inventoryFieldList;
+
 
 	@Enumerated(EnumType.STRING)
 	private Role role = Role.User;

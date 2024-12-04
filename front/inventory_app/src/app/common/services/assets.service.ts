@@ -16,6 +16,9 @@ import {
   InventoryField
 } from '../models/inventory-field';
 import {Room} from '../models/room';
+import {
+  InventoryFieldService
+} from './inventory-field.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -23,7 +26,7 @@ export class AssetsService {
 
   private url = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private inventoryFieldService: InventoryFieldService) {}
 
   private getHeaders(): HttpHeaders {
     const token = sessionStorage.getItem('access_token');
@@ -35,10 +38,11 @@ export class AssetsService {
 
   // Fetch all assets
   getAssets(): Observable<Asset[]> {
-    return this.http.get<Asset[]>(`${this.url}/asset/`, { headers: this.getHeaders() });
+    return this.http.get<Asset[]>(`${this.url}/asset/field/` + this.inventoryFieldService.getCurrentInventoryField(), { headers: this.getHeaders() });
   }
 
   addAsset(asset: Asset): Observable<Asset> {
+    console.log('saveAsset called service');
     return this.http.post<Asset>(`${this.url}/asset/`, asset, { headers: this.getHeaders() }).pipe(
       tap((newAsset) => console.log('Asset added:', newAsset))
     );

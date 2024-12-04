@@ -21,23 +21,23 @@ public class AdminInitializer {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@Bean
-	public CommandLineRunner initAdminUser(PersonRepository personRepository) {
-		return args -> {
-
-			Optional<Person> adminUserOptional = personRepository.findByEmail("admin123@example" +
-					".com");
-			if (adminUserOptional.isEmpty()) {
-				Person adminUser = new Person();
-				adminUser.setFirstName("Admin123");
-				adminUser.setLastName("User123");
-				adminUser.setEmail("admin123@example.com");
-				adminUser.setUnit("unit");
-				adminUser.setPassword(passwordEncoder.encode("admin1234")); // Set default password
-				adminUser.setRole(Role.Admin); // Assign admin role
-				personRepository.save(adminUser);
-				System.out.println("Admin user created with email: admin123@example.com and password: admin1234");
-			}
-		};
-	}
+//	@Bean
+//	public CommandLineRunner initAdminUser(PersonRepository personRepository) {
+//		return args -> {
+//
+//			Optional<Person> adminUserOptional = personRepository.findByEmail("admin123@example" +
+//					".com");
+//			if (adminUserOptional.isEmpty()) {
+//				Person adminUser = new Person();
+//				adminUser.setFirstName("Admin123");
+//				adminUser.setLastName("User123");
+//				adminUser.setEmail("admin123@example.com");
+//				adminUser.setUnit("unit");
+//				adminUser.setPassword(passwordEncoder.encode("admin1234")); // Set default password
+//				adminUser.setRole(Role.Admin); // Assign admin role
+//				personRepository.save(adminUser);
+//				System.out.println("Admin user created with email: admin123@example.com and password: admin1234");
+//			}
+//		};
+//	}
 }

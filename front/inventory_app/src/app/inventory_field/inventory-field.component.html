@@ -19,12 +19,6 @@
           <td mat-cell *matCellDef="let field">{{ field.number }}</td>
         </ng-container>
 
-        <!-- Kolumna Osoba -->
-        <ng-container matColumnDef="person">
-          <th mat-header-cell *matHeaderCellDef> Osoba </th>
-          <td mat-cell *matCellDef="let field">{{ field.person?.firstName || 'Brak danych' }}</td>
-        </ng-container>
-
         <!-- Kolumna Akcje -->
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef> Akcje </th>

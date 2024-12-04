@@ -43,8 +43,8 @@ public class RoomService {
 		if (newRoomData.getDateTo() != null) {
 			existingRoom.setDateTo(newRoomData.getDateTo());
 		}
-		if (newRoomData.getAsset() != null) {
-			existingRoom.setAsset(newRoomData.getAsset());
+		if (newRoomData.getAssets() != null) {
+			existingRoom.setAssets(newRoomData.getAssets());
 		}
 		return existingRoom;
 	}

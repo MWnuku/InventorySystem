@@ -16,19 +16,16 @@ import java.util.List;
 public class InventoryField {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Setter(AccessLevel.NONE)
-	@Column(name = "inventory_id")
 	private Long id;
 	private String number;
 
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "person_id")
+	@ManyToOne
 	@JsonBackReference
 	private Person person;
 
-	@OneToMany(mappedBy = "inventoryField", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-	@JsonIdentityReference(alwaysAsId = true)
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-	private List<Asset> assets = new ArrayList<>();
+	@OneToMany(mappedBy = "inventoryField", cascade = CascadeType.ALL)
+	@JsonManagedReference("inventoryField-assets")
+	private List<Asset> assets;
+
 }
+

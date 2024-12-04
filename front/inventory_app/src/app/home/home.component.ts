@@ -43,7 +43,7 @@ import {
 })
 export class HomeComponent {
   displayedColumns: string[] = [
-    'id', 'inventoryField', 'name', 'inventoryNumber', 'person',
+    'id', 'name', 'inventoryNumber', 'person',
     'value', 'date', 'status', 'room', 'type', 'adnotations', 'action'
   ];
 
@@ -54,14 +54,12 @@ export class HomeComponent {
   filterRoom: string = '';
   selectedAsset: Asset | null = null;
   isEditing: boolean = false;
-  // persons: Person[] = []; // List of persons fetched from the backend
   inventoryFields: InventoryField[] = [];
 
   constructor(private assetService: AssetsService, private location: Location) {}
 
   ngOnInit(): void {
     this.getAssets();
-    // this.getPersons(); // Fetch persons for dropdown
     this.getInventoryFields();
   }
 
@@ -77,13 +75,6 @@ export class HomeComponent {
     );
   }
 
-
-
-  // getPersons(): void {
-  //   this.assetService.getPersons().subscribe((persons: Person[]) => {
-  //     this.persons = persons;
-  //   });
-  // }
 
   get filteredAssets() {
     return this.assets.filter(asset => {
@@ -133,7 +124,6 @@ export class HomeComponent {
         dateFrom: new Date(),
         dateTo: null, // Allow null for dateTo
       },
-      // person: { id: null }, // Use undefined for optional fields
       inventoryField: { id: null },
       type: TypeEnum.Computer, // Allow null for type
     };
@@ -156,7 +146,7 @@ export class HomeComponent {
     const duplicatedAsset: Asset = {
       ...asset,
       id: 0, // Backend should assign a new ID
-      name: `${asset.name} (Copy)`,
+      name: `${asset.name}`,
       date: new Date(),
     };
     this.editAsset(duplicatedAsset); // Reuse the edit logic to open the form

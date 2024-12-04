@@ -12,7 +12,7 @@ import {
 })
 export class InventoryFieldService {
 
-  private baseUrl = environment.apiUrl + '/field/';
+  private baseUrl = environment.apiUrl + '/field/person/';
 
   constructor(private http: HttpClient) {}
 
@@ -24,12 +24,16 @@ export class InventoryFieldService {
   }
 
   getInventoryFields(): Observable<any[]> {
-    return this.http.get<any[]>(this.baseUrl, {headers: this.getHeaders()});
+    return this.http.get<any[]>(this.baseUrl + this.getCurrentUser(), {headers: this.getHeaders()});
   }
 
   getCurrentInventoryField(): number | null{
     const selected =  sessionStorage.getItem('selectedInventoryFieldId');
-    return selected ? +selected : null
+    return selected ? +selected : null;
   }
 
+  getCurrentUser(): number | null{
+    const selected = sessionStorage.getItem('userId');
+    return selected ? +selected : null;
+  }
 }

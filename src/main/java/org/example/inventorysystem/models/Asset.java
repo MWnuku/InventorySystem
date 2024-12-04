@@ -6,8 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "asset")
@@ -18,15 +16,10 @@ import java.util.List;
 public class Asset {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Setter(AccessLevel.NONE)
-	@Column(name = "asset_id")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonIdentityReference(alwaysAsId = true)
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-//	@JsonIgnoreProperties({"inventoryFieldList", "password", "role", "enabled", "username", "authorities",
-//			"accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
+	@JoinColumn(name = "person_id")
 	private Person person;
 
 	private Integer inventoryNumber;
@@ -38,15 +31,16 @@ public class Asset {
 	private String adnotations;
 	private AssetStatus status;
 
-	@OneToOne(mappedBy = "asset")
-	@JsonManagedReference
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "room_id")
 	private Room room;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIdentityReference(alwaysAsId = true)
-	@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+	@ManyToOne
+	@JsonBackReference("inventoryField-assets")
 	private InventoryField inventoryField;
 
 	@Nullable
 	private Type type;
 }
+
+

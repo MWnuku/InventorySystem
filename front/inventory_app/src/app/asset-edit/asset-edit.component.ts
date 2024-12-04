@@ -13,11 +13,13 @@ import {
 } from '@angular/forms';
 import {AssetsService} from '../common/services/assets.service';
 import { Location } from '@angular/common';
+import { format } from 'date-fns';
 
 import {
   MaterialModule
 } from '../shared/modules/material/material.module';
 import {
+  Router,
   RouterModule
 } from '@angular/router';
 import {
@@ -62,13 +64,15 @@ import {
 export class AssetEditComponent implements OnInit {
   @Input() asset: any;
   @Output() close = new EventEmitter<void>();
-  persons: Person[] = []; // List of persons fetched from the backendtypeOptions = Object.values(TypeEnum);
+  persons: Person[] = [];
   typeOptions = Object.values(TypeEnum);
   statusOptions = Object.values(AssetStatus);
   inventoryFields: InventoryField[] =[];
   rooms: Room[] = [];
   currentUser: number | null | undefined;
   currentInventoryField: number | null | undefined;
+  selectedInventoryFieldId!: number;
+  loggedInPersonId!: number;
 
   cancel(): void {
     this.close.emit();
@@ -76,13 +80,14 @@ export class AssetEditComponent implements OnInit {
 
   assetForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private assetService: AssetsService, private authService: AuthService, private  inventoryService: InventoryFieldService, private location: Location) {
+  constructor(private fb: FormBuilder, private assetService: AssetsService, private authService: AuthService,
+              private  inventoryService: InventoryFieldService, private router: Router) {
     this.assetForm = this.fb.group({
       inventoryNumber: [null, Validators.required],
       name: [null, Validators.required],
-      acquisitionDate: [new Date().toISOString().split('T')[0], Validators.required],
-      inventoryFieldId: [this.currentInventoryField, Validators.required],
-      personId: [this.currentUser, Validators.required],
+      acquisitionDate: [format(new Date(), 'yyyy-MM-dd'), Validators.required],
+      inventoryFieldId: [{ value: this.currentInventoryField, disabled: true }, Validators.required],
+      personId: [ this.currentUser , Validators.required],
       roomId: [null, Validators.required],
       adnotations: [null],
       value: [null],
@@ -105,6 +110,8 @@ export class AssetEditComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.selectedInventoryFieldId = Number(sessionStorage.getItem('selectedInventoryFieldId'));
+    this.loggedInPersonId = Number(sessionStorage.getItem('userId'))
     if (this.asset) {
       // Editing: Pre-fill the form
       this.assetForm.patchValue({
@@ -155,17 +162,17 @@ export class AssetEditComponent implements OnInit {
 
       const assetPayload: Asset = {
         id: this.asset?.id || null, // If this is an edit, use the existing asset ID
-        person: { id: formData.personId },
+        person: { id: this.loggedInPersonId },
         inventoryNumber: formData.inventoryNumber,
         name: formData.name,
-        date: formData.acquisitionDate,
+        date: format(new Date(this.assetForm.value.acquisitionDate), 'yyyy-MM-dd'),
         adnotations: formData.adnotations,
         value: formData.value,
         status: formData.status,
         type: formData.type,
         room: selectedRoom,
         inventoryField: {
-          id: this.assetForm.value.inventoryFieldId,
+          id: this.selectedInventoryFieldId,
         },
       };
 
@@ -192,7 +199,6 @@ export class AssetEditComponent implements OnInit {
     }
   }
   goBack(): void {
-    this.location.back(); // Navigates back to the previous page
+    this.router.navigate(['/assets']);
   }
-
 }
