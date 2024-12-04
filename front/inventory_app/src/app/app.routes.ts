@@ -15,7 +15,8 @@ import {
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard]},
-  { path: 'assets', component: HomeComponent },
-  { path: '', component: InventoryFieldComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'assets', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: '', component: InventoryFieldComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: ''}
 ];

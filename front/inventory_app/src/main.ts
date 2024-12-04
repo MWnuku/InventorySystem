@@ -11,12 +11,16 @@ import {routes} from './app/app.routes';
 import {
   provideAnimations
 } from '@angular/platform-browser/animations';
+import {
+  AuthGuard
+} from './app/core/guard/auth.guard';
 
 bootstrapApplication(AppComponent,{
   providers: [
     provideHttpClient(),
     provideRouter(routes),
     provideAnimations(),
+    {provide: AuthGuard, useClass: AuthGuard},
   ]}
 )
   .catch((err) => console.error(err));

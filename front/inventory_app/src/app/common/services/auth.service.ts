@@ -30,9 +30,13 @@ export class AuthService {
     return this.http.post<any>(`${this.url}/login`, credentials, {headers}).pipe(
       tap((response: any) => {
 
+
         sessionStorage.setItem('access_token', response.token);
-        sessionStorage.setItem('user_role', response.role);
-        sessionStorage.setItem('userId', response.userId);
+
+        const decodedToken = this.decodeJwtToken(response.token);
+        sessionStorage.setItem('user_role', decodedToken.role);
+        sessionStorage.setItem('userId', decodedToken.id);
+
         this.loggedInStatus.next(true);
       })
     );
@@ -54,4 +58,18 @@ export class AuthService {
     return userId ? +userId : null; // Return userId as a number or null if not found
   }
 
+  private decodeJwtToken(token: string): any {
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      throw new Error('Invalid JWT token');
+    }
+
+    const payloadBase64 = parts[1];
+
+    const normalizedBase64 = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
+
+    const decodedPayload = atob(normalizedBase64);
+
+    return JSON.parse(decodedPayload);
+  }
 }
