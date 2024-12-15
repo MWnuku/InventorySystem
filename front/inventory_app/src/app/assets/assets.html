@@ -2,7 +2,7 @@
   <button mat-icon-button (click)="goBack()">
     <mat-icon>arrow_back</mat-icon>
   </button>
-  <span>Asset Management</span>
+  <span>System wspomagania inwentaryzacji</span>
 </mat-toolbar>
 <mat-card class="assets-list-card">
   <mat-card-header>
@@ -55,21 +55,21 @@
             <td mat-cell *matCellDef="let asset"> {{ asset.inventoryNumber || 'N/A'}} </td>
           </ng-container>
 
-          <ng-container matColumnDef="person">
-            <th mat-header-cell *matHeaderCellDef> Osoba </th>
-            <td mat-cell *matCellDef="let asset"> {{ asset.person?.firstName + ' ' + asset.person?.lastName || 'N/A'}} </td>
-          </ng-container>
+<!--          <ng-container matColumnDef="person">-->
+<!--            <th mat-header-cell *matHeaderCellDef> Osoba </th>-->
+<!--            <td mat-cell *matCellDef="let asset"> {{ asset.person?.firstName + ' ' + asset.person?.lastName || 'N/A'}} </td>-->
+<!--          </ng-container>-->
 
           <ng-container matColumnDef="value">
             <th mat-header-cell *matHeaderCellDef> Wartość </th>
             <td mat-cell *matCellDef="let asset"> {{ asset.value | currency: 'PLN' : 'symbol' : '1.0-0'}} </td>
           </ng-container>
 
-          <!-- Date Column -->
           <ng-container matColumnDef="date">
             <th mat-header-cell *matHeaderCellDef> Data </th>
-            <td mat-cell *matCellDef="let asset"> {{ asset.date | date:'shortDate' || 'N/A'}} </td>
+            <td mat-cell *matCellDef="let asset"> {{ asset.date | date: 'dd-MM-yyyy' || 'N/A'}} </td>
           </ng-container>
+
 
           <!-- Room Column -->
           <ng-container matColumnDef="room">

@@ -3,13 +3,16 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { MaterialModule } from '../shared/modules/material/material.module';
 import {AuthService} from '../common/services/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import {CommonModule} from '@angular/common';
+import {
+  CommonModule,
+  NgOptimizedImage
+} from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MaterialModule, ReactiveFormsModule, RouterModule, CommonModule],
+  imports: [MaterialModule, ReactiveFormsModule, RouterModule, CommonModule, NgOptimizedImage],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })

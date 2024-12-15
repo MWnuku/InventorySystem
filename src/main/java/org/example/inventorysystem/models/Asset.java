@@ -25,6 +25,7 @@ public class Asset {
 	private Integer inventoryNumber;
 	private String name;
 	private Long value;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate date;
 
 	@Nullable

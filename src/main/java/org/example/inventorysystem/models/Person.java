@@ -1,9 +1,6 @@
 package org.example.inventorysystem.models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +33,6 @@ public class Person implements UserDetails {
 	private String email;
 	private String unit;
 	@OneToMany(mappedBy = "person", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JsonIdentityReference(alwaysAsId = true)
 	private List<Asset> assets;
 
 	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL)

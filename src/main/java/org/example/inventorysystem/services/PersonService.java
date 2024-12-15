@@ -22,6 +22,15 @@ public class PersonService {
 		return personRepository.save(person);
 	}
 
+	public Person registerPerson(Person person) {
+		if (personRepository.existsByEmail(person.getEmail())) {
+			throw new IllegalArgumentException("Email already in use.");
+		}
+
+		person.setPassword(passwordEncoder.encode(person.getPassword()));
+		return personRepository.save(person);
+	}
+
 	public Person updatePerson(Person person) {
 		if (person.getId() == null) {
 			throw new IllegalArgumentException("Person id cannot be null");

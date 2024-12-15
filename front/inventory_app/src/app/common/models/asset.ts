@@ -11,10 +11,10 @@ import {TypeEnum} from '../enumes/typeEnum';
 export interface Asset {
   id?: number | null;
   person?: Person;
-  inventoryNumber?: number | null; // Allow null values
+  inventoryNumber?: number | null;
   name?: string;
   value?: number;
-  date?: Date | string;
+  date?: string | number | Date;
   adnotations?: string;
   status?: AssetStatus;
   room?: Room;

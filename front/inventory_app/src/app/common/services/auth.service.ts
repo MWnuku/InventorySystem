@@ -30,7 +30,6 @@ export class AuthService {
     return this.http.post<any>(`${this.url}/login`, credentials, {headers}).pipe(
       tap((response: any) => {
 
-
         sessionStorage.setItem('access_token', response.token);
 
         const decodedToken = this.decodeJwtToken(response.token);
@@ -47,6 +46,8 @@ export class AuthService {
   public hasToken(): boolean {
     return !!sessionStorage.getItem('access_token');
   }
+
+
   logout(): void {
     sessionStorage.removeItem('access_token');
     sessionStorage.removeItem('user_role');

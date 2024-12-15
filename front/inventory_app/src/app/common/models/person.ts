@@ -4,7 +4,7 @@ import {
 import {Role} from './role';
 
 export interface Person {
-  id: number | null;
+  id: number | null | undefined;
   firstName?: string; // Optional
   lastName?: string; // Optional
   email?: string; // Optional

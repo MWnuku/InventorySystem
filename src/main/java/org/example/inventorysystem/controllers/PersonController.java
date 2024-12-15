@@ -27,6 +27,16 @@ public class PersonController {
 		}
 	}
 
+	@PostMapping("/register")
+	public ResponseEntity<?> registerPerson(@RequestBody Person person) {
+		try {
+			Person registeredPerson = personService.registerPerson(person);
+			return new ResponseEntity<>(registeredPerson, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@PostMapping("/update")
 	public ResponseEntity<?> updatePerson(@RequestBody Person person) {
 		try {

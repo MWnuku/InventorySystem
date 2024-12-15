@@ -32,12 +32,11 @@ public class SecurityConfig {
 
 		@Override
 		public void addCorsMappings(CorsRegistry registry) {
-			// Pozwól na dostęp do wszystkich ścieżek z dowolnej domeny
-			registry.addMapping("/**") // Ustawiasz do jakich endpointów CORS ma być dostępny
-					.allowedOrigins("http://localhost:4200") // Możesz dodać inne domeny
-					.allowedMethods("GET", "POST", "PUT", "DELETE") // Ustawić metody HTTP, które są dozwolone
-					.allowedHeaders("*") // Pozwól na wszystkie nagłówki
-					.allowCredentials(true); // Jeśli masz wymaganie co do przesyłania ciasteczek / tokenów
+			registry.addMapping("/**")
+					.allowedOrigins("http://localhost:4200")
+					.allowedMethods("GET", "POST", "PUT", "DELETE")
+					.allowedHeaders("*")
+					.allowCredentials(true);
 		}
 	}
 	@Bean
@@ -45,6 +44,8 @@ public class SecurityConfig {
 		http
 				.authorizeRequests(auth -> auth
 						.requestMatchers("/auth/login").permitAll()
+						.requestMatchers("/person/register").permitAll()
+						.requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 						.anyRequest().authenticated()
 				)
 				.csrf(csrf -> csrf.disable())

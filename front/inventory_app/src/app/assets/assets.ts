@@ -38,12 +38,12 @@ import {
   selector: 'app-home',
   standalone: true,
   imports: [MaterialModule, ReactiveFormsModule, RouterModule, CommonModule, FormsModule, AssetEditComponent],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './assets.html',
+  styleUrls: ['./assets.css']
 })
-export class HomeComponent {
+export class Assets {
   displayedColumns: string[] = [
-    'id', 'name', 'inventoryNumber', 'person',
+    'id', 'name', 'inventoryNumber',
     'value', 'date', 'status', 'room', 'type', 'adnotations', 'action'
   ];
 
@@ -75,7 +75,6 @@ export class HomeComponent {
     );
   }
 
-
   get filteredAssets() {
     return this.assets.filter(asset => {
       const nameMatch = this.filterName
@@ -90,7 +89,6 @@ export class HomeComponent {
         ? asset.room?.symbol?.toLowerCase().includes(this.filterRoom.toLowerCase())
         : true;
 
-      // Combine all filters conjunctively (AND logic)
       return nameMatch && inventoryMatch && roomMatch;
     });
   }
@@ -99,36 +97,41 @@ export class HomeComponent {
   getAssets(): void {
     this.assetService.getAssets().subscribe(
       (assets: Asset[]) => {
-        this.assets = assets; // Populate the assets array
-        console.log('Assets fetched:', this.assets); // Debug log
+        this.assets = assets.map(asset => {
+          if (typeof asset.date === 'string') {
+            const [day, month, year] = asset.date.split('-').map(Number);
+            asset.date = new Date(year, month - 1, day);
+          }
+          return asset;
+        });
+        console.log('Assets fetched and processed:', this.assets);
       },
       (error) => console.error('Error fetching assets:', error)
     );
   }
 
-
   addAsset(): void {
     const newAsset: Asset = {
       id: 0,
       name: '',
-      inventoryNumber: undefined, // Use undefined for optional number fields
+      inventoryNumber: undefined,
       value: 0,
       date: new Date(),
       adnotations: '',
-      status: AssetStatus.Active, // Use enum for status
+      status: AssetStatus.Active,
       room: {
         id: 0,
-        asset: {} as Asset, // Provide default or placeholder asset
+        asset: {} as Asset,
         building: '',
         symbol: '',
         dateFrom: new Date(),
-        dateTo: null, // Allow null for dateTo
+        dateTo: null,
       },
       inventoryField: { id: null },
-      type: TypeEnum.Computer, // Allow null for type
+      type: TypeEnum.Computer,
     };
 
-    this.editAsset(newAsset); // Reuse the edit logic
+    this.editAsset(newAsset);
   }
 
   editAsset(asset: Asset): void {
@@ -145,11 +148,19 @@ export class HomeComponent {
   duplicateAsset(asset: Asset): void {
     const duplicatedAsset: Asset = {
       ...asset,
-      id: 0, // Backend should assign a new ID
-      name: `${asset.name}`,
-      date: new Date(),
+      id: 0,
+      name: `${asset.name} (copy)`,
+      date: asset.date ? new Date(asset.date) : new Date(),
+      type: asset.type,
+      room: asset.room,
+      inventoryField: asset.inventoryField,
+      status: asset.status,
+      value: asset.value,
+      adnotations: asset.adnotations,
     };
-    this.editAsset(duplicatedAsset); // Reuse the edit logic to open the form
+
+    this.editAsset(duplicatedAsset);
+
     this.isEditing = true;
   }
 
@@ -157,11 +168,11 @@ export class HomeComponent {
     if (confirm('Are you sure you want to delete this asset?')) {
       this.assetService.deleteAsset(id).subscribe(() => {
         console.log(`Asset with id ${id} deleted`);
-        this.assets = this.assets.filter(asset => asset.id !== id); // Update the UI after deletion
+        this.assets = this.assets.filter(asset => asset.id !== id);
       });
     }
   }
   goBack(): void {
-    this.location.back(); // Navigates back to the previous page
+    this.location.back();
   }
 }
